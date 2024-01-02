@@ -2,3 +2,6 @@
 /Backend/package.json
 /Backend/package-lock.json
 /Backend/config/config.json
+/frontend/node_modules
+/frontend/package.json
+/frontend/package-lock.json

@@ -1,9 +1,11 @@
 const express = require('express')
 const app = express();
+const cors = require('cors')
 const PORT_NO = 7000;   //port number client will send or fetch data from
 //For the initialiation of the table
 const db= require("./models")   //iterate all the files to check or create tables
 app.use(express.json()) //parsing the json body 
+app.use(cors());
 
 //defines routing
 //importing route location from files

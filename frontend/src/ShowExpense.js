@@ -68,7 +68,7 @@ export default function ShowExpense() {
                                         <td>{value.id}</td>
                                         <td>{value.expenseName}</td>
                                         <td>{value.category}</td>
-                                        <td>{value.price}</td>
+                                        <td>${value.price}</td>
                                         <td>{value.email}</td>
                                         <td>{value.createdAt}</td>
                                         <td>Edit</td>

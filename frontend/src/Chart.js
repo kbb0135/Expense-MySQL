@@ -9,17 +9,13 @@ import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 
 
-const options = {
-  title: "Expenses",
-};
+
 export default function VisualChart() {
   const [isClick, setIsClick] = useState(false)
   const [isOpen, setIsOpen] = useState(false);
-  const [isExpenseOpen, setIsExpenseOpen] = useState(false);
-  const [isData, setIsData] = useState(false);
+  const [totalSaving, setTotalSaving] = useState([])
   const dummySaving = 200;
-  const p = 500;
-  const l = 200;
+
   //keeping track of the button that shows details about the expenditure
   const buttonClick = () => {
     setIsClick(true)
@@ -31,16 +27,6 @@ export default function VisualChart() {
     }
   }
   //show the whole detail of saving and spending 
-  const expenseDetail = () => {
-    setIsExpenseOpen(true)
-    setIsData((prevOpen) => !prevOpen);
-    if (!isData) {
-
-    }
-    else {
-      setIsData(false)
-    }
-  }
 
   const [item, setItem] = useState([])
   useEffect(() => {
@@ -53,6 +39,13 @@ export default function VisualChart() {
         if (error.response) {
           console.log(error.response.status)
         }
+      })
+    axios.get("http://localhost:7000/addSaving").then((response) => {
+      setTotalSaving(response.data)
+      console.log(response.data)
+    })
+      .catch((error) => {
+        console.log(error.response.status)
       })
 
   }, [])
@@ -68,27 +61,78 @@ export default function VisualChart() {
     }
     groupPrices[element.category].total += element.price
   });
+
+
+  //fetching totalSavings
+  let saving = 0;
+  //{saving: 25},
+  //{saving 525.25}
+  //save will iterate through an object and will be poiniting at saving
+  //totalSaving will save all the totals there
+  totalSaving.forEach(save => {
+    saving += save.saving
+
+  })
+
+  console.log("getSaving", saving)
+
+
+
   const formattedExpenses = Object.values(groupPrices);
   //calculating overall total 
   formattedExpenses.forEach(totalValue => {
     overallTotal += totalValue.total
+
   })
+  const getColorForCategory = (category, index) => {
+    // You can define your logic to assign colors here based on category name or index
+    // For example, generating random colors based on index:
+    const colors = ["#ff0000", "#00ff00", "#0000ff"]; // Define your color palette
+    return colors[index % colors.length]; // Get color based on index (using modulus for cycling through colors)
+  };
 
 
-  const chartData = formattedExpenses.map(item => [item.category, item.total]);
+  const chartData = formattedExpenses.map((item, index) =>
+    [item.category,
+    item.total,
+    getColorForCategory(item.category, index),
+    ]);
+
+  //data for pieChart
+  const pieData = formattedExpenses.map(item =>
+    [item.category,
+    item.total
+    ]);
+
+
+
 
   const TotalSaving = () => {
-    const overallSaving = l- overallTotal;
+    const overallSaving = saving - overallTotal;
     return overallSaving;
   }
+
+  const data = [
+    ["Value", "Saving in $", "Expense in $", "NetSaving in $"],
+    ["2021", saving, overallTotal, TotalSaving()]
+  ]
+  const options = {
+    chart: {
+      title: "Expenditure Data",
+      subtitle: "Current Savings",
+    },
+  };
 
   return (
     <div>
       <Header />
       <div>
+        <div className="div-center">
+          <h1>Expenditure Representation in PieChart</h1>
+        </div>
         <Chart
           chartType="PieChart"
-          data={[["Category", "Total"], ...chartData]}
+          data={[["Category", "Total"], ...pieData]}
           options={options}
           width={"100%"}
           height={"400px"}
@@ -168,7 +212,7 @@ export default function VisualChart() {
                       <td className="text-center">
                         {
                           TotalSaving() > 0 ? (
-                            <>  
+                            <>
                               <h5>On average, you save ${TotalSaving()} more than<br></br>
                                 you spend. The total expenditure for all the categories that <br></br>
                                 you provided is ${overallTotal}, while the amount you've saved is ${dummySaving}.<br></br>
@@ -197,7 +241,18 @@ export default function VisualChart() {
 
                   </tbody>
                 </Table>
-
+                <div className="div-center">
+                  <h1>Visual Representation of Total Savings</h1>
+                </div>
+                <div className="chart-container">
+                  <Chart
+                    chartType="Bar"
+                    width="55%"
+                    height="400px"
+                    data={data}
+                    options={options}
+                  />
+                </div>
 
 
               </>
@@ -205,15 +260,23 @@ export default function VisualChart() {
               <>
               </>
             )}
+            <br></br>
+            <br></br>
+            <hr></hr>
 
           </div>
-          <Chart
-            chartType="BarChart"
-            data={[["Category", "Total"], ...chartData]}
-            options={options}
-            width={"100%"}
-            height={"400px"}
-          />
+          <div className="div-center">
+            <h1>Visuale Expense of Bar-Chart</h1>
+          </div>
+          <div className="chart-container">
+            <Chart
+              chartType="ColumnChart"
+              data={[["Category", "Total in $", { role: "style" }], ...chartData]}
+              options={options}
+              width={"60%"}
+              height={"500px"}
+            />
+          </div>
         </div>
       </div>
     </div>

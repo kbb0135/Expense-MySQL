@@ -6,26 +6,25 @@ import './Expense.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Header from './Header';
 
-export const data = [
-    ["Task", "Hours per Day"],
-    ["Work", 11],
-    ["Eat", 2],
-    ["Commute", 2],
-    ["Watch TV", 2],
-    ["Sleep", 7],
-];
-
-export const options = {
-    title: "My Daily Activities",
-};
-
 export default function ShowExpense() {
     const [data, setData] = useState([])
+    const [saving, setSaving] = useState([])
     useEffect(() => {
 
         axios.get("http://localhost:7000/add").then((response) => {
             toast.success("succesfully fetched Data")
             setData(response.data)
+
+        })
+            .catch((error) => {
+                if (error.response) {
+                    toast.error(error.response.status)
+                }
+            })
+
+        axios.get("http://localhost:7000/addsaving").then((response) => {
+
+            setSaving(response.data)
             console.log(response.data)
         })
             .catch((error) => {
@@ -57,6 +56,8 @@ export default function ShowExpense() {
                                 <th>Price($)</th>
                                 <th>Email</th>
                                 <th>Creation Date</th>
+                                <th bg="danger">Edit</th>
+                                <th>Delete</th>
 
                             </tr>
                         </thead>
@@ -80,6 +81,43 @@ export default function ShowExpense() {
                             })}
                         </tbody>
                     </Table>
+                </div>
+                <br></br>
+                <br></br>
+                <hr></hr>
+                <div>
+                    <div className="div-center">
+                        <h1>Total Saving</h1>
+                    </div>
+                    <Table striped bordered hover>
+                        <thead>
+                            {/* data obtained with the header value */}
+                            <tr>
+                                <th>ID</th>
+                                <th>Amount Saved</th>
+                                <th>Creation Date</th>
+                                <th bg="danger">Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        {/* maping the data we fetched from the db */}
+                        <tbody>
+                            {saving.map((value, key) => {
+                                return (
+                                    <tr>
+                                        <td>{value.id}</td>
+                                        <td>${value.saving}</td>
+                                        <td>{value.createdAt}</td>
+                                        <td>Edit</td>
+                                        <td>Delete</td>
+                                    </tr>
+                                )
+
+
+                            })}
+                        </tbody>
+                    </Table>
+
                 </div>
             </div>
 

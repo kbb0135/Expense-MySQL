@@ -14,3 +14,8 @@
 .nav-link {
     text-decoration: none;
 }
+.chart-container {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}

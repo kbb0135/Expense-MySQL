@@ -19,10 +19,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.FLOAT(8,2),
             allowNull: false,
         },
-        email: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
+        
     })
     return AddExpense;
 }

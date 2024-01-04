@@ -1,49 +1,113 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Form from 'react-bootstrap/Form';
 import Header from './Header';
 import Button from 'react-bootstrap/Button';
 import './Expense.css'
+import toast, { Toaster } from 'react-hot-toast';
+import axios from 'axios';
 
 export default function AddExpense() {
+  const [expenseName, setExpenseName] = useState("")
+  const [category, setCategory] = useState("")
+  const [price, setPrice] = useState(0)
+  
+
+  let data = {};
+  const handleSubmit =(e) => {
+    if (expenseName === "") {
+      toast.error("Enter your userName")
+      e.preventDefault();
+    }
+    else {
+      console.log("Here")
+    }
+    if (category === "") {
+      toast.error("Please provide one of the following category")
+      e.preventDefault()
+    }
+    if (price <= 0) {
+      toast.error("Please enter a valid price.")
+      e.preventDefault()
+    }
+    if (expenseName !== "" && category !== "" && price !== 0) {
+      e.preventDefault()
+      data = {
+        "expenseName": expenseName,
+        "category": category,
+        "price": price.toFixed(2),
+      }
+      console.log("data")
+
+      
+     axios.post("http://localhost:7000/addexpense",data).then((response)=>
+      {
+        try {
+          toast.success("Successfully inserted data")
+        }
+        catch {
+        }  
+      })
+     
+    }
+  }
+
+
+
   return (
     <div>
       <Header />
-      <Form>
+      <div className="div-center">
+        <h1>Add Expense</h1>
+      </div>
+
+      <Form onSubmit={(e) => handleSubmit(e)}>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
           <Form.Label className="form-head">Expense Name</Form.Label>
-          <Form.Control type="email" placeholder="Example:Walmart" />
+          <Form.Control
+            type="text"
+            placeholder="Example:Walmart"
+            value={expenseName}
+            onChange={(e) => setExpenseName(e.target.value)}
+          />
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-        <Form.Label className="form-head">Category</Form.Label>
-        <Form.Select aria-label="Default select example">
-          <option>Select Category</option>
-          <option value="1">Food</option>
-          <option value="2">Grocery</option>
-          <option value="3">Bills</option>
-          <option value="4">Outdoor Expenses</option>
-          <option value="5">Shopping</option>
-          <option value="6">Remitance</option>
-          <option value="7">Gas</option>
-          <option value="8">Car Maintainance</option>
-          <option value="9">Rent</option>
-          <option value="10">Bills</option>
-          <option value="11">Interest Charged</option>
-          <option value="12">Others</option>
-          
-        </Form.Select>
+          <Form.Label className="form-head">Category</Form.Label>
+          <Form.Select
+            aria-label="Default select example"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option>Select Category</option>
+            <option value="Food">Food</option>
+            <option value="Grocery">Grocery</option>
+            <option value="Bills">Bills</option>
+            <option value="Outdoor Expenses">Outdoor Expenses</option>
+            <option value="Shopping">Shopping</option>
+            <option value="Remitance">Remitance</option>
+            <option value="Gas">Gas</option>
+            <option value="Car-Maintainance">Car-Maintainance</option>
+            <option value="Rent">Rent</option>
+            <option value="Bills">Bills</option>
+            <option value="Interest Charged">Interest Charged</option>
+            <option value="Ride">Ride</option>
+            <option value="Others">Others</option>
+
+          </Form.Select>
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
           <Form.Label className="form-head">Expense Price:$</Form.Label>
-          <Form.Control type="number" placeholder="Example:14" />
+          <Form.Control
+            type="number"
+            placeholder="Example:14"
+            value={price}
+            onChange={(e) => setPrice(parseFloat(e.target.value))}
+          />
         </Form.Group>
-
-        <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-          <Form.Label className="form-head">Email</Form.Label>
-          <Form.Control type="email" placeholder="Example:Walmart" />
-        </Form.Group>
+        <Button type="submit">Submit</Button>
       </Form>
-      <Button>Submit</Button>
+      <Toaster />
+
     </div>
   )
 }

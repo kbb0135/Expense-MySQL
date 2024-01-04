@@ -21,9 +21,16 @@ router.get("/", (req, res)=>
 //after that send the body to as name.create(bodyName)
 //parsing is required for json file to be formatted using app.use(express.json())
 router.post("/", async(req, res)=> {
-    const expenseAdd = req.body;
-    await AddExpense.create(expenseAdd);
+    try {
+        const expenseAdd = req.body;
+    await AddExpense.create(expenseAdd)
     res.json(expenseAdd);
+    }
+    catch(error) {
+        console.log("Error adding expense:", error);
+        res.status(500).json({ error: "Failed to add expense" });
+    }
+    
 
     //dummy data posted using insomnia
 // {

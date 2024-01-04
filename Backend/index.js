@@ -13,7 +13,7 @@ const addExpense = require('./routes/AddExpense')
 const addSaving = require('./routes/AddSaving')
 // //we pass two parameters for routing 
 // //app.use('/url-that-u-define", path-of-the-route')
-app.use("/add", addExpense)
+app.use("/addexpense", addExpense)
 app.use("/addsaving", addSaving)
 
 

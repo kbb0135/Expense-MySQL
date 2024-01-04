@@ -7,6 +7,7 @@ import './Expense.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
+import Carousel from 'react-bootstrap/Carousel';
 
 
 
@@ -14,7 +15,6 @@ export default function VisualChart() {
   const [isClick, setIsClick] = useState(false)
   const [isOpen, setIsOpen] = useState(false);
   const [totalSaving, setTotalSaving] = useState([])
-  const dummySaving = 200;
 
   //keeping track of the button that shows details about the expenditure
   const buttonClick = () => {
@@ -31,7 +31,7 @@ export default function VisualChart() {
   const [item, setItem] = useState([])
   useEffect(() => {
 
-    axios.get("http://localhost:7000/add").then((response) => {
+    axios.get("http://localhost:7000/addexpense").then((response) => {
       setItem(response.data)
       // console.log(response.data)
     })
@@ -127,16 +127,49 @@ export default function VisualChart() {
     <div>
       <Header />
       <div>
-        <div className="div-center">
-          <h1>Expenditure Representation in PieChart</h1>
+
+
+
+        <div>
+          <Carousel data-bs-theme="dark" slide={false}>
+            <Carousel.Item slide={false}>
+              <div className="div-center">
+                <h1>Expenditure Representation in PieChart</h1>
+              </div>
+              <div className="d-flex align-items-center justify-content-center">
+              <div className="chart-container">
+                <Chart
+                  chartType="PieChart"
+                  data={[["Category", "Total"], ...pieData]}
+                  options={options}
+                  width={"200%"}
+                  height={"400px"}
+                />
+                </div>
+              </div>
+            </Carousel.Item>
+
+            <Carousel.Item slide={false}>
+            <div className="div-center">
+                  <h1>Visual Expense of Bar-Chart</h1>
+                </div>
+              <div className="d-flex align-items-center justify-content-center">
+                
+
+                <div className="chart-container">
+                  <Chart
+                    chartType="ColumnChart"
+                    data={[["Category", "Total in $", { role: "style" }], ...chartData]}
+                    options={options}
+                    width={"200%"}
+                    height={"400px"}
+                  />
+                </div>
+              </div>
+            </Carousel.Item>
+          </Carousel>
         </div>
-        <Chart
-          chartType="PieChart"
-          data={[["Category", "Total"], ...pieData]}
-          options={options}
-          width={"100%"}
-          height={"400px"}
-        />
+
         <div>
           <br></br>
 
@@ -215,7 +248,7 @@ export default function VisualChart() {
                             <>
                               <h5>On average, you save ${TotalSaving()} more than<br></br>
                                 you spend. The total expenditure for all the categories that <br></br>
-                                you provided is ${overallTotal}, while the amount you've saved is ${dummySaving}.<br></br>
+                                you provided is ${overallTotal}, while the amount you've saved is ${saving}.<br></br>
                                 It's great to see you're maintaining positive savings. Keep up the good work by staying mindful of your expenses!</h5>
 
                             </>
@@ -223,7 +256,7 @@ export default function VisualChart() {
                             <>
                               <h5>On Average, you spend ${-1 * TotalSaving()} more than<br></br>
                                 you save. The total expenditure for all the categories that <br></br>
-                                you provided is ${overallTotal} while the amount you save for this is ${dummySaving}.<br></br>
+                                you provided is ${overallTotal} while the amount you save for this is ${saving}.<br></br>
                                 Please make sure that you are keeping track of your expenses to be in a positive term.</h5>
 
 
@@ -265,18 +298,7 @@ export default function VisualChart() {
             <hr></hr>
 
           </div>
-          <div className="div-center">
-            <h1>Visuale Expense of Bar-Chart</h1>
-          </div>
-          <div className="chart-container">
-            <Chart
-              chartType="ColumnChart"
-              data={[["Category", "Total in $", { role: "style" }], ...chartData]}
-              options={options}
-              width={"60%"}
-              height={"500px"}
-            />
-          </div>
+
         </div>
       </div>
     </div>

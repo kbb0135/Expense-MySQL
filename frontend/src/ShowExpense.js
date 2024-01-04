@@ -1,17 +1,56 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
-import toast from 'react-hot-toast'
+import toast, { Toaster } from 'react-hot-toast'
 import Table from 'react-bootstrap/Table'
 import './Expense.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Header from './Header';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Form from 'react-bootstrap/Form';
 
-export default function ShowExpense() {
+const ShowExpense = ({ item }) => {
+    //State variables to manages expenses
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [selectedExpense, setSelectedExpense] = useState(null);
     const [data, setData] = useState([])
     const [saving, setSaving] = useState([])
+    const [expenseName, setExpenseName] = useState("")
+    const [category, setCategory] = useState("")
+    const [price, setPrice] = useState(0)
+    const [saveExpense, setSaveExpense] = useState([])
+
+    //Function to do handle edit when the edit butto is clicked
+
+    const handleEdit = (expense) => {
+        setSelectedExpense(expense)
+        setShowEditModal(true)
+        console.log(expense)
+        setExpenseName(selectedExpense.expenseName)
+        setCategory(selectedExpense.category)
+        setPrice(parseFloat(selectedExpense.price))
+
+        expense.expenseName = expenseName
+        expense.category = category
+        expense.price = price
+        return expense;
+
+    }
+
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setSelectedExpense({
+            ...selectedExpense,
+            [name]: value,
+        });
+
+    };
+
+
     useEffect(() => {
 
-        axios.get("http://localhost:7000/add").then((response) => {
+        axios.get("http://localhost:7000/addexpense").then((response) => {
             toast.success("succesfully fetched Data")
             setData(response.data)
 
@@ -32,6 +71,7 @@ export default function ShowExpense() {
                     toast.error(error.response.status)
                 }
             })
+
 
     }, [])
     return (
@@ -54,7 +94,6 @@ export default function ShowExpense() {
                                 <th>Expense Name</th>
                                 <th>Category</th>
                                 <th>Price($)</th>
-                                <th>Email</th>
                                 <th>Creation Date</th>
                                 <th bg="danger">Edit</th>
                                 <th>Delete</th>
@@ -65,15 +104,14 @@ export default function ShowExpense() {
                         <tbody>
                             {data.map((value, key) => {
                                 return (
-                                    <tr>
+                                    <tr key={key}>
                                         <td>{value.id}</td>
                                         <td>{value.expenseName}</td>
                                         <td>{value.category}</td>
                                         <td>${value.price}</td>
-                                        <td>{value.email}</td>
                                         <td>{value.createdAt}</td>
-                                        <td>Edit</td>
-                                        <td>Delete</td>
+                                        <td><Button className="btn btn-warning" onClick={() => handleEdit(value)} >Edit</Button></td>
+                                        <td><Button className="btn btn-danger" >Delete</Button></td>
                                     </tr>
                                 )
 
@@ -82,45 +120,121 @@ export default function ShowExpense() {
                         </tbody>
                     </Table>
                 </div>
-                <br></br>
-                <br></br>
-                <hr></hr>
-                <div>
-                    <div className="div-center">
-                        <h1>Total Saving</h1>
+            </div>
+
+            <br></br>
+            <br></br>
+            <br></br>
+            <hr></hr>
+            <div>
+                <div className="div-center">
+                    <h1>Total Saving</h1>
+                </div>
+                <Table striped bordered hover variant="dark">
+                    <thead>
+                        {/* data obtained with the header value */}
+                        <tr>
+                            <th>ID</th>
+                            <th>Amount Saved</th>
+                            <th>Creation Date</th>
+                            <th bg="danger">Edit</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    {/* maping the data we fetched from the db */}
+                    <tbody>
+                        {saving.map((value, key) => {
+                            return (
+                                <tr key={key}>
+                                    <td>{value.id}</td>
+                                    <td>${value.saving}</td>
+                                    <td>{value.createdAt}</td>
+                                    <td><Button className="btn btn-warning" >Edit</Button></td>
+                                    <td><Button className="btn btn-danger" >Delete</Button></td>
+                                </tr>
+                            )
+
+
+                        })}
+                    </tbody>
+                </Table>
+                {/* //handle the modals to make sure that the data is beong appropriately handled */}
+                <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+                    <div
+                        className="modal show"
+                        style={{ display: 'block', position: 'initial' }}
+                    >
+                        <Modal.Dialog>
+                            <Modal.Header closeButton bg="danger">
+                                <Modal.Title>
+                                    <div className="div-center">
+                                        <h1>Edit Expenses</h1>
+                                    </div></Modal.Title>
+                            </Modal.Header>
+
+                            <Modal.Body>
+                                <Form >
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                        <Form.Label className="form-head">Expense Name</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Example:Walmart"
+                                            value={expenseName}
+                                            onChange={(e) => setExpenseName(e.target.value)}
+
+
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                        <Form.Label className="form-head">Category</Form.Label>
+                                        <Form.Select
+                                            aria-label="Default select example"
+                                            value={category}
+                                            onChange={(e) => setCategory(e.target.value)}
+
+                                        >
+                                            <option>Select Category</option>
+                                            <option value="Food">Food</option>
+                                            <option value="Grocery">Grocery</option>
+                                            <option value="Bills">Bills</option>
+                                            <option value="Outdoor Expenses">Outdoor Expenses</option>
+                                            <option value="Shopping">Shopping</option>
+                                            <option value="Remitance">Remitance</option>
+                                            <option value="Gas">Gas</option>
+                                            <option value="Car-Maintainance">Car-Maintainance</option>
+                                            <option value="Rent">Rent</option>
+                                            <option value="Bills">Bills</option>
+                                            <option value="Interest Charged">Interest Charged</option>
+                                            <option value="Ride">Ride</option>
+                                            <option value="Others">Others</option>
+
+                                        </Form.Select>
+                                    </Form.Group>
+
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                        <Form.Label className="form-head">Expense Price:$</Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            placeholder="Example:14"
+                                            value={price}
+                                            onChange={(e) => setPrice(parseFloat(e.target.value))}
+
+                                        />
+                                    </Form.Group>
+                                </Form>
+                            </Modal.Body>
+
+                            <Modal.Footer>
+                                <Button variant="danger">Close</Button>
+                                <Button variant="success">Save changes</Button>
+                            </Modal.Footer>
+                        </Modal.Dialog>
                     </div>
-                    <Table striped bordered hover>
-                        <thead>
-                            {/* data obtained with the header value */}
-                            <tr>
-                                <th>ID</th>
-                                <th>Amount Saved</th>
-                                <th>Creation Date</th>
-                                <th bg="danger">Edit</th>
-                                <th>Delete</th>
-                            </tr>
-                        </thead>
-                        {/* maping the data we fetched from the db */}
-                        <tbody>
-                            {saving.map((value, key) => {
-                                return (
-                                    <tr>
-                                        <td>{value.id}</td>
-                                        <td>${value.saving}</td>
-                                        <td>{value.createdAt}</td>
-                                        <td>Edit</td>
-                                        <td>Delete</td>
-                                    </tr>
-                                )
+                </Modal>
 
-
-                            })}
-                        </tbody>
-                    </Table>
-
-                </div>
             </div>
 
         </div>
     )
 }
+export default ShowExpense;

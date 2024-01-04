@@ -1,8 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ShowExpense from './ShowExpense';
-import Test from './Test';
+import Home from './Home';
 import AddExpense from './AddExpense';
 import Chart from './Chart';
+import AddSaving from './AddSaving';
 
 
 function App() {
@@ -10,16 +11,19 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<ShowExpense />} />
+          <Route path="/showexpense" element={<ShowExpense />} />
         </Routes>
         <Routes>
-          <Route path="/test" element={<Test />} />
+          <Route path="/" element={<Home />} />
         </Routes>
         <Routes>
           <Route path="/addexpense" element={<AddExpense />} />
         </Routes>
         <Routes>
           <Route path="/visualizeexpense" element={<Chart />} />
+        </Routes>
+        <Routes>
+          <Route path="/addsaving" element={<AddSaving />} />
         </Routes>
       </BrowserRouter>
 

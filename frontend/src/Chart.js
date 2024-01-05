@@ -220,7 +220,7 @@ export default function VisualChart() {
                             TotalSaving() > 0 ? (
                               <>
                                 <h2>
-                                  Your Overall Saving is: <Badge bg="success">${TotalSaving()}</Badge>
+                                  Your Overall Saving is: <Badge bg="success">${TotalSaving().toFixed(2)}</Badge>
                                 </h2>
                               </>
                             ) : (
@@ -246,7 +246,7 @@ export default function VisualChart() {
                         {
                           TotalSaving() > 0 ? (
                             <>
-                              <h5>On average, you save ${TotalSaving()} more than<br></br>
+                              <h5>On average, you save ${TotalSaving().toFixed(2)} more than<br></br>
                                 you spend. The total expenditure for all the categories that <br></br>
                                 you provided is ${overallTotal}, while the amount you've saved is ${saving}.<br></br>
                                 It's great to see you're maintaining positive savings. Keep up the good work by staying mindful of your expenses!</h5>
@@ -254,7 +254,7 @@ export default function VisualChart() {
                             </>
                           ) : (
                             <>
-                              <h5>On Average, you spend ${-1 * TotalSaving()} more than<br></br>
+                              <h5>On Average, you spend ${-1 * TotalSaving().toFixed(2)} more than<br></br>
                                 you save. The total expenditure for all the categories that <br></br>
                                 you provided is ${overallTotal} while the amount you save for this is ${saving}.<br></br>
                                 Please make sure that you are keeping track of your expenses to be in a positive term.</h5>

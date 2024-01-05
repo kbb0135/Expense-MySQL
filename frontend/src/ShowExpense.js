@@ -19,16 +19,67 @@ const ShowExpense = ({ item }) => {
     const [category, setCategory] = useState("")
     const [price, setPrice] = useState(0)
     const [saveExpense, setSaveExpense] = useState([])
+    const [uid, setUid] = useState(0)
+    //------------------------------------------------------------------------------
+    const [editModal, setEditModal] = useState(false);
+    const [selectedSaving, setSelectedSaving] = useState(null);
+    const [saveData, setSaveData] = useState([])
+    const [savingAmount, setSavingAmount] = useState([])
+    const [amount, setAmount] = useState(0)
+    const [savingUID, setSavingUID] = useState(0)
 
     //Function to do handle edit when the edit butto is clicked
 
     const handleEdit = (expense) => {
+        setUid(expense.id)
         setSelectedExpense(expense)
         setShowEditModal(true)
         console.log(expense)
         setExpenseName(expense.expenseName);
         setCategory(expense.category);
-        setPrice(parseFloat(expense.price));
+        setAmount(parseFloat(expense.price));
+
+    }
+
+    const handleEditSave = (val) => {
+        setSavingUID(val.id)
+        setSelectedSaving(val)
+        setEditModal(true)
+        setAmount(parseFloat(val.saving))
+    }
+
+    const handleSaveAmountChange = async() => {
+        if(!selectedSaving) return;
+        const updatedSaving = {
+            ...selectedSaving,
+            saving: amount.toFixed(2)
+        }
+        const updatedSavingData = saving.map((saveAmount)=> 
+        saveAmount.id === selectedSaving.id ? updatedSaving : saveAmount
+        )
+
+        setSaving(updatedSavingData)
+
+        var id = savingUID;
+        setEditModal(false);
+        setSelectedSaving(null)
+        console.log("TEST@@@==",updatedSaving.saving)
+        var value = amount
+
+        var updatedSavingValue = {
+            id:id,
+            saving:updatedSaving.saving
+        }
+        console.log("Test=",updatedSavingValue)
+
+        try {
+            axios.post("http://localhost:7000/updatesaving", updatedSavingValue).then((res)=> {
+                toast.success("Successfully updated data")
+            })  
+        }
+        catch(error) {
+            console.log(error)
+        }
 
     }
 
@@ -50,18 +101,19 @@ const ShowExpense = ({ item }) => {
         );
 
         setData(updatedData); // Update state with the updated data
-        console.log("updatedData=", updatedData[selectedExpense.id-1])
-
+        
+        var id  = uid;
+        console.log("Selected ID=", id)
         // Close the modal and reset state
         setShowEditModal(false);
         setSelectedExpense(null);
         setSaveExpense(null);
 
         var updatedValue = {
-            id: updatedData[selectedExpense.id-1].id,
-            expenseName:updatedData[selectedExpense.id-1].expenseName,
-            category:updatedData[selectedExpense.id-1].category,
-            price:updatedData[selectedExpense.id-1].price
+            id: id,
+            expenseName:expenseName,
+            category:category,
+            price:price
         }
         console.log("Test=",updatedValue)
         try {
@@ -70,7 +122,7 @@ const ShowExpense = ({ item }) => {
             })  
         }
         catch(error) {
-           toast.error("Error updating Data")
+            console.log(error)
         }
     };
 
@@ -78,13 +130,6 @@ const ShowExpense = ({ item }) => {
         try {
             const updatedData = data.filter((expense) => expense.id !== id);
             setData(updatedData);
-            var deleteId = {id:id}
-
-            axios.post("http://localhost:7000/deleteexpense", deleteId).then((res)=> {
-                toast.success("Successfully deleted Data")
-            })
-
-
             toast.success("Expense deleted successfully");
         }
 
@@ -109,7 +154,8 @@ const ShowExpense = ({ item }) => {
         axios.get("http://localhost:7000/addsaving").then((response) => {
 
             setSaving(response.data)
-            console.log(response.data)
+            setSavingAmount(response.data)
+            console.log("saving", saving)
         })
             .catch((error) => {
                 if (error.response) {
@@ -194,7 +240,7 @@ const ShowExpense = ({ item }) => {
                                     <td>{value.id}</td>
                                     <td>${value.saving}</td>
                                     <td>{value.createdAt}</td>
-                                    <td><Button className="btn btn-warning" >Edit</Button></td>
+                                    <td><Button className="btn btn-warning" onClick={()=>handleEditSave(value)} >Edit</Button></td>
                                     <td><Button className="btn btn-danger" >Delete</Button></td>
                                 </tr>
                             )
@@ -270,12 +316,54 @@ const ShowExpense = ({ item }) => {
                             </Modal.Body>
 
                             <Modal.Footer>
-                                <Button variant="danger">Close</Button>
+                                <Button variant="danger" onClick={()=>setShowEditModal(false)}>Close</Button>
                                 <Button variant="success" onClick={handleSaveChanges}>Save changes</Button>
                             </Modal.Footer>
                         </Modal.Dialog>
                     </div>
                 </Modal>
+
+
+                <Modal show={editModal} onHide={() => setEditModal(false)}>
+                    <div
+                        className="modal show"
+                        style={{ display: 'block', position: 'initial' }}
+                    >
+                        <Modal.Dialog>
+                            <Modal.Header closeButton bg="danger">
+                                <Modal.Title>
+                                    <div className="div-center">
+                                        <h1>Edit Saving</h1>
+                                    </div></Modal.Title>
+                            </Modal.Header>
+
+                            <Modal.Body>
+                                <Form >
+                                    <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                        <Form.Label className="form-head">Expense Price:$</Form.Label>
+                                        <Form.Control
+                                            type="number"
+                                            placeholder="Example:14"
+                                            value={amount}
+                                            onChange={(e) => setAmount(parseFloat(e.target.value))}
+
+                                        />
+                                    </Form.Group>
+                                </Form>
+                            </Modal.Body>
+
+                            <Modal.Footer>
+                                <Button variant="danger" onClick={()=>setEditModal(false)}>Close</Button>
+                                <Button variant="success" onClick={handleSaveAmountChange}>Save changes</Button>
+                            </Modal.Footer>
+                        </Modal.Dialog>
+                    </div>
+                </Modal>
+
+                        
+
+                
+
 
             </div>
             <Toaster />

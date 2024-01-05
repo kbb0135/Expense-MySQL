@@ -11,10 +11,12 @@ app.use(cors());
 //importing route location from files
 const addExpense = require('./routes/AddExpense')
 const addSaving = require('./routes/AddSaving')
+const updateExpense = require('./routes/UpdateExpense')
 // //we pass two parameters for routing 
 // //app.use('/url-that-u-define", path-of-the-route')
 app.use("/addexpense", addExpense)
 app.use("/addsaving", addSaving)
+app.use("/updateexpense", updateExpense)
 
 
 

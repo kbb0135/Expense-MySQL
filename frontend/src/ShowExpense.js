@@ -26,32 +26,74 @@ const ShowExpense = ({ item }) => {
         setSelectedExpense(expense)
         setShowEditModal(true)
         console.log(expense)
-        setExpenseName(selectedExpense.expenseName)
-        setCategory(selectedExpense.category)
-        setPrice(parseFloat(selectedExpense.price))
-
-        expense.expenseName = expenseName
-        expense.category = category
-        expense.price = price
-        return expense;
+        setExpenseName(expense.expenseName);
+        setCategory(expense.category);
+        setPrice(parseFloat(expense.price));
 
     }
 
+    const handleSaveChanges = async() => {
+        if (!selectedExpense) return;
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setSelectedExpense({
+        // Update selectedExpense with the modified values
+        const updatedExpense = {
             ...selectedExpense,
-            [name]: value,
-        });
+            expenseName: expenseName,
+            category: category,
+            price: price.toFixed(2),
+        };
 
+        // Here, you can perform an API call to update the data in your backend
+        // For the sake of demonstration, let's update the state directly
+        const updatedData = data.map((expense) =>
+            expense.id === selectedExpense.id ? updatedExpense : expense
+        );
+
+        setData(updatedData); // Update state with the updated data
+        console.log("updatedData=", updatedData[selectedExpense.id-1])
+
+        // Close the modal and reset state
+        setShowEditModal(false);
+        setSelectedExpense(null);
+        setSaveExpense(null);
+
+        var updatedValue = {
+            id: updatedData[selectedExpense.id-1].id,
+            expenseName:updatedData[selectedExpense.id-1].expenseName,
+            category:updatedData[selectedExpense.id-1].category,
+            price:updatedData[selectedExpense.id-1].price
+        }
+        console.log("Test=",updatedValue)
+        try {
+            axios.post("http://localhost:7000/updateexpense", updatedValue).then((res)=> {
+                toast.success("Successfully updated data")
+            })  
+        }
+        catch(error) {
+            console.log(error)
+        }
     };
 
+    const handleDelete = async (id) => {
+        try {
+            const updatedData = data.filter((expense) => expense.id !== id);
+            setData(updatedData);
+
+            
+
+
+            toast.success("Expense deleted successfully");
+        }
+
+        catch (error) {
+            toast.error("Failed to delete expense");
+        }
+    }
 
     useEffect(() => {
 
         axios.get("http://localhost:7000/addexpense").then((response) => {
-            toast.success("succesfully fetched Data")
+            
             setData(response.data)
 
         })
@@ -111,7 +153,7 @@ const ShowExpense = ({ item }) => {
                                         <td>${value.price}</td>
                                         <td>{value.createdAt}</td>
                                         <td><Button className="btn btn-warning" onClick={() => handleEdit(value)} >Edit</Button></td>
-                                        <td><Button className="btn btn-danger" >Delete</Button></td>
+                                        <td><Button className="btn btn-danger"  onClick={() => handleDelete(value.id)}>Delete</Button></td>
                                     </tr>
                                 )
 
@@ -226,13 +268,14 @@ const ShowExpense = ({ item }) => {
 
                             <Modal.Footer>
                                 <Button variant="danger">Close</Button>
-                                <Button variant="success">Save changes</Button>
+                                <Button variant="success" onClick={handleSaveChanges}>Save changes</Button>
                             </Modal.Footer>
                         </Modal.Dialog>
                     </div>
                 </Modal>
 
             </div>
+            <Toaster />
 
         </div>
     )

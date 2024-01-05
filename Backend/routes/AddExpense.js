@@ -11,10 +11,6 @@ router.get("/", async(req, res)=> {
      const expenseData = await AddExpense.findAll();
     res.json(expenseData)
 })
-router.get("/", (req, res)=> 
-{
-    res.json("Hello World")
-})
 
 //For the post,we have to first initialize the path to access the models that we have created
 //Destructure the file or table created using const {name} = require("path")

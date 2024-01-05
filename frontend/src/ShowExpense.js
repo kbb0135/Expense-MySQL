@@ -126,11 +126,25 @@ const ShowExpense = ({ item }) => {
         }
     };
 
-    const handleDelete = async (id) => {
+    const deleteSaving = async(id) => {
+        const savingData = saving.filter((val)=>val.id !== id)
+        setSaving(savingData)
+        await axios.post("http://localhost:7000/deletesaving", {id:id}).then(async(res)=> {
+            if(res.status) {
+                await toast.success("Successfully updated data")
+            }
+           
+        })
+        toast.error("Here")
+    }
+
+    const handleDelete = async(id) => {
         try {
             const updatedData = data.filter((expense) => expense.id !== id);
             setData(updatedData);
-            toast.success("Expense deleted successfully");
+            await axios.post("http://localhost:7000/deleteexpense", {id:id}).then(async(res)=> {
+                await toast.success("Successfully updated data")
+            })
         }
 
         catch (error) {
@@ -241,7 +255,7 @@ const ShowExpense = ({ item }) => {
                                     <td>${value.saving}</td>
                                     <td>{value.createdAt}</td>
                                     <td><Button className="btn btn-warning" onClick={()=>handleEditSave(value)} >Edit</Button></td>
-                                    <td><Button className="btn btn-danger" >Delete</Button></td>
+                                    <td><Button className="btn btn-danger" onClick={()=>deleteSaving(value.id)}>Delete</Button></td>
                                 </tr>
                             )
 

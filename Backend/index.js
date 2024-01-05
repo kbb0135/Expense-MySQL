@@ -14,6 +14,7 @@ const addSaving = require('./routes/AddSaving')
 const updateExpense = require('./routes/UpdateExpense')
 const deleteExpense = require('./routes/DeleteExpense')
 const updateSaving = require('./routes/UpdateSaving')
+const deleteSaving = require('./routes/DeleteSaving')
 // //we pass two parameters for routing 
 // //app.use('/url-that-u-define", path-of-the-route')
 app.use("/addexpense", addExpense)
@@ -21,6 +22,7 @@ app.use("/addsaving", addSaving)
 app.use("/updateexpense", updateExpense)
 app.use("/deleteexpense", deleteExpense)
 app.use("/updatesaving", updateSaving)
+app.use("/deletesaving",deleteSaving)
 
 
 

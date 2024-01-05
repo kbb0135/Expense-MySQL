@@ -137,7 +137,6 @@ const ShowExpense = ({ item }) => {
         })
         toast.error("Here")
     }
-
     const handleDelete = async(id) => {
         try {
             const updatedData = data.filter((expense) => expense.id !== id);

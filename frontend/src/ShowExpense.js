@@ -70,7 +70,7 @@ const ShowExpense = ({ item }) => {
             })  
         }
         catch(error) {
-            console.log(error)
+           toast.error("Error updating Data")
         }
     };
 
@@ -78,8 +78,11 @@ const ShowExpense = ({ item }) => {
         try {
             const updatedData = data.filter((expense) => expense.id !== id);
             setData(updatedData);
+            var deleteId = {id:id}
 
-            
+            axios.post("http://localhost:7000/deleteexpense", deleteId).then((res)=> {
+                toast.success("Successfully deleted Data")
+            })
 
 
             toast.success("Expense deleted successfully");

@@ -26,11 +26,6 @@ app.use("/updatesaving", updateSaving)
 app.use("/deletesaving",deleteSaving)
 app.use("/auth", users)
 
-
-
-
-
-
 //initialize table if not created
 //will return a promise if successful
 

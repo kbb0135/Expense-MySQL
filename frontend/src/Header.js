@@ -20,6 +20,9 @@ export default function Header() {
                         <Nav.Link><Link to="/addsaving" className="nav-link">Add Saving</Link></Nav.Link>
                         <Nav.Link><Link to="/addexpense" className="nav-link">Add Expense</Link></Nav.Link>
                         <Nav.Link><Link to="/visualizeexpense" className="nav-link">Visualize Expense</Link></Nav.Link>
+                        <Nav.Link><Link to="/login" className="nav-link">Login</Link></Nav.Link>
+                        <Nav.Link><Link to="/visualizeexpense" className="nav-link">Visualize Expense</Link></Nav.Link>
+
 
                     </Nav>
                 </Container>

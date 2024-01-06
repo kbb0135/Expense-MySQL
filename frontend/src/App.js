@@ -4,6 +4,7 @@ import Home from './Home';
 import AddExpense from './AddExpense';
 import Chart from './Chart';
 import AddSaving from './AddSaving';
+import Login from './Login';
 
 
 function App() {
@@ -24,6 +25,9 @@ function App() {
         </Routes>
         <Routes>
           <Route path="/addsaving" element={<AddSaving />} />
+        </Routes>
+        <Routes>
+          <Route path="/login" element={<Login />} />
         </Routes>
       </BrowserRouter>
 

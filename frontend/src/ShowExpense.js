@@ -64,7 +64,6 @@ const ShowExpense = ({ item }) => {
         setEditModal(false);
         setSelectedSaving(null)
         console.log("TEST@@@==",updatedSaving.saving)
-        var value = amount
 
         var updatedSavingValue = {
             id:id,
@@ -126,16 +125,22 @@ const ShowExpense = ({ item }) => {
         }
     };
 
-    const deleteSaving = async(id) => {
+    const deleteSaving = (id) => {
         const savingData = saving.filter((val)=>val.id !== id)
         setSaving(savingData)
-        await axios.post("http://localhost:7000/deletesaving", {id:id}).then(async(res)=> {
+        try {
+            axios.post("http://localhost:7000/deletesaving", {id:id}).then(async(res)=> {
             if(res.status) {
                 await toast.success("Successfully updated data")
             }
            
         })
-        toast.error("Here")
+        }
+        catch {
+            toast.error("Here")
+        }
+        
+        
     }
     const handleDelete = async(id) => {
         try {

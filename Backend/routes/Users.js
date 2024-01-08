@@ -6,7 +6,6 @@ const {sign} = require('jsonwebtoken')
 
 //bcrypt to hash user's password
 const bcrypt = require("bcrypt")
-
 //API end point calls
 
 //For the post,we have to first initialize the path to access the models that we have created

@@ -2,9 +2,9 @@ const { verify } = require('jsonwebtoken')
 const validateToken = (req, res, next) => {
     //to verify the accessToken, we need to access the
     //token from the client side
-    const validateToken = req.header("accessToken")
+    const accessToken = req.header("accessToken")
     //if there is no token provided by the user, send a 403 error message back
-    if (!validateToken) {
+    if (!accessToken) {
         return res.json({ error: "Insufficient privileges" })
     }
     else {
@@ -15,7 +15,7 @@ const validateToken = (req, res, next) => {
             }
         }
         catch (error) {
-            res.json({error:error})
+            return res.json({error:error})
         }
 
     }

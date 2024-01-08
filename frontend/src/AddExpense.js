@@ -39,13 +39,29 @@ export default function AddExpense() {
       console.log("data")
 
       
-     axios.post("http://localhost:7000/addexpense",data).then((response)=>
+     axios.post("http://localhost:7000/addexpense",data,
+     {headers: {accessToken: sessionStorage.getItem("accessToken")}
+    },
+     ).then((response)=>
       {
-        try {
-          toast.success("Successfully inserted data")
+        if (response.data.error) {
+          
+          try {
+            toast.error(response.data.error)
+            console.log(response)
+            console.log(sessionStorage.getItem("accessToken"))
+          }
+
+          catch {
+          } 
         }
-        catch {
-        }  
+        else {
+          toast.success("Data added successfully")
+        }
+         
+      })
+      .catch((error)=> {
+        toast.error("Error in inserting data", error)
       })
      
     }

@@ -19,6 +19,11 @@
 .nav-link {
   text-decoration: none;
 }
+.navbar-user {
+  
+  position:relative;
+  color:white;text-align: left;
+}
 
 .chart-container {
   display: flex;
@@ -59,8 +64,18 @@
   font-family: Arial, Helvetica, sans-serif;
 
 }
+.nav-user {
+  position: absolute;
+  margin:auto;
+  color:white;
+  right:0%;
+  top:20%;
+  transform:translate(-50%);
+  text-decoration:none;
+  justify-content: center;
+}
 .form-button {
-  position: relative;
+  position: auto;
   left: 40%;
   transform: translate(0%, -50%);
   margin-top:40px;

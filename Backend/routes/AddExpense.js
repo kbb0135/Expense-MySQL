@@ -2,6 +2,7 @@ const express = require('express'); //initializing express
 //using excpress to map those routes
 const router = express.Router()
 const {AddExpense} = require("../models")
+const {validateToken} = require("../Middleware/Auth")
 
 //API end point calls
 router.get("/", async(req, res)=> {
@@ -16,7 +17,7 @@ router.get("/", async(req, res)=> {
 //Destructure the file or table created using const {name} = require("path")
 //after that send the body to as name.create(bodyName)
 //parsing is required for json file to be formatted using app.use(express.json())
-router.post("/", async(req, res)=> {
+router.post("/",validateToken, async(req, res)=> {
     try {
         const expenseAdd = req.body;
     await AddExpense.create(expenseAdd)

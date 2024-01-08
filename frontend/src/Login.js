@@ -47,7 +47,7 @@ function Login() {
                 await axios.post("http://localhost:7000/auth/login", data).then(async (res) => {
 
                     toast.success("Login Sucessful")
-                    await sessionStorage.setItem('accesstoken', res.data);
+                    await sessionStorage.setItem('accessToken', res.data);
                     setTimeout(() => {
                         navigate("/")
                     }, 1000)

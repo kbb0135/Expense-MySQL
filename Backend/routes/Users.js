@@ -2,6 +2,7 @@ const express = require('express'); //initializing express
 //using excpress to map those routes
 const router = express.Router()
 const { Users } = require("../models")
+const {sign} = require('jsonwebtoken')
 
 //bcrypt to hash user's password
 const bcrypt = require("bcrypt")
@@ -78,8 +79,24 @@ router.post('/login', async (req, res) => {
         const user = await Users.findOne({ where: { email: email } });
         if (!user) throw new Error("User doesn't exists");
         await bcrypt.compare(password, user.password).then((match) => {
-            if (!match) throw new Error("Username or password do not match");
-            res.json("You are logged in");
+            if (!match) {
+                throw new Error("Username or password do not match");
+            }
+            else {
+                //we create a token here because all the requirements are fuilfilled
+
+            const accessToken =sign(
+                {   
+                    name:user.firstName,
+                    email:user.email,
+                    id:user.id
+                }
+                ,"I am logging in"  //this is a secret key to decrypt the token 
+                )
+            res.json(accessToken);
+            }
+             
+            
         })
 
     } catch (error) {

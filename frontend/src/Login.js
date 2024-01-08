@@ -36,7 +36,7 @@ function Login() {
             }
         }
 
-        
+
         if (email !== "" && password.length >= 8) {
             console.log(email, password)
             var data = {
@@ -44,29 +44,30 @@ function Login() {
                 password: password
             }
             try {
-                await axios.post("http://localhost:7000/auth/login", data).then(async(res) => {
+                await axios.post("http://localhost:7000/auth/login", data).then(async (res) => {
 
-                    toast.success(res.data)
-                    setTimeout(()=> {
+                    toast.success("Login Sucessful")
+                    await sessionStorage.setItem('accesstoken', res.data);
+                    setTimeout(() => {
                         navigate("/")
-                    },1000)
-                    
+                    }, 1000)
+
                 })
-                .catch((error) => {
-                    if (error.response) {
-                        toast.error(error.response.data.error)
-                      // The request was made and the server responded with a status code
-                      // that falls out of the range of 2xx
-                      console.error("Server responded with status code:", error.response.status);
-                      console.error("Error data:", error.response.data.error);
-                    } else if (error.request) {
-                      // The request was made but no response was received
-                      toast.error("No response received:", error.request);
-                    } else {
-                      // Something happened in setting up the request that triggered the error
-                      console.error("Error:", error.message);
-                    }
-                })
+                    .catch((error) => {
+                        if (error.response) {
+                            toast.error(error.response.data.error)
+                            // The request was made and the server responded with a status code
+                            // that falls out of the range of 2xx
+                            console.error("Server responded with status code:", error.response.status);
+                            console.error("Error data:", error.response.data.error);
+                        } else if (error.request) {
+                            // The request was made but no response was received
+                            toast.error("No response received:", error.request);
+                        } else {
+                            // Something happened in setting up the request that triggered the error
+                            console.error("Error:", error.message);
+                        }
+                    })
             }
             catch {
                 console.log("Something went wrong")
@@ -75,7 +76,7 @@ function Login() {
 
         }
 
-       
+
     }
     return (
         <div >

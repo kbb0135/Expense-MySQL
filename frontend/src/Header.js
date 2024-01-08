@@ -21,7 +21,7 @@ export default function Header() {
                         <Nav.Link><Link to="/addexpense" className="nav-link">Add Expense</Link></Nav.Link>
                         <Nav.Link><Link to="/visualizeexpense" className="nav-link">Visualize Expense</Link></Nav.Link>
                         <Nav.Link><Link to="/login" className="nav-link">Login</Link></Nav.Link>
-                        <Nav.Link><Link to="/visualizeexpense" className="nav-link">Visualize Expense</Link></Nav.Link>
+                        <Nav.Link><Link to="/register" className="nav-link">Register</Link></Nav.Link>
 
 
                     </Nav>

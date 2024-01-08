@@ -1,48 +1,84 @@
-
 .div-center h1 {
-    font-size: 34px;
-    text-align: center;
-    font-family: Arial, Helvetica, sans-serif;
-    background-image: linear-gradient(to right, red, blue);
-    background: transparent;
-    /* Use background-clip to only apply gradient to text */
-    -webkit-background-clip: text;
-    background-clip: text;
-    /* Apply the gradient to the text */
-    color: transparent;
-    background-image: linear-gradient(to right, black, rgb(218, 50, 50));
+  font-size: 34px;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  background-image: linear-gradient(to right, red, blue);
+  background: transparent;
+  /* Use background-clip to only apply gradient to text */
+  -webkit-background-clip: text;
+  background-clip: text;
+  /* Apply the gradient to the text */
+  color: transparent;
+  background-image: linear-gradient(to right, black, rgb(218, 50, 50));
+}
+
+.div-center h2 {
+  text-align: center;
 }
 
 .nav-link {
-    text-decoration: none;
+  text-decoration: none;
 }
+
 .chart-container {
-    display:flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 .image-container {
-    width:90%;
-    height:400px;
-    display:flex;
-    align-items: right;
-    justify-content: right;
+  width: 90%;
+  height: 400px;
+  display: flex;
+  align-items: right;
+  justify-content: right;
 
 }
-.flex-container {
-    display: flex;
-    justify-content: space-between;
-  }
+
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.form-container small {
+  text-align: center;
+  font-size: .7em;
+  font-weight: bold;
+
+}
+.form-info {
+  margin-bottom: 20px;
+}
+.form-container {
+  border: 2px solid;
+  width: 450px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 40px;
+  font-family: Arial, Helvetica, sans-serif;
+
+}
+.form-button {
+  position: relative;
+  left: 40%;
+  transform: translate(0%, -50%);
+  margin-top:40px;
   
-  .left-content {
-    width: 50%; /* Adjust the width as needed */
-  }
-  
-  .right-content {
-    width: 45%; /* Adjust the width as needed */
-  }
-  .Carousel-Container img{
-    width: 100%;
-    margin:auto;
-    justify-content: flex-end;
-  }
+}
+
+.left-content {
+  width: 50%;
+  /* Adjust the width as needed */
+}
+
+.right-content {
+  width: 45%;
+  /* Adjust the width as needed */
+}
+
+.Carousel-Container img {
+  width: 100%;
+  margin: auto;
+  justify-content: flex-end;
+}

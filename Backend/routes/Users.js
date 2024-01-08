@@ -15,21 +15,46 @@ const bcrypt = require("bcrypt")
 router.post("/", async (req, res) => {
     try {
         const { firstName, lastName, email, password } = req.body;
-        //Hashing the password before saving it into database
-        //hash will provide me the hashed password
-        bcrypt.hash(password, 10).then((hash) => {
-            Users.create({
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                password: hash
+        //check if user with that name already exists
+        const user = await Users.findOne({ where: { email: email } });
+        if(user=== null) {
+            //Hashing the password before saving it into database
+            //hash will provide me the hashed password
+            bcrypt.hash(password, 10).then((hash) => {
+                Users.create({
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    password: hash
+                })
+                res.json("Successfully created Users")
             })
-            res.json("Successfully created Users")
-        })
+        }
+        else {
+            if (user.email === email) {
+                throw new Error("User already exist")
+            }
+            else {
+                //Hashing the password before saving it into database
+                //hash will provide me the hashed password
+                bcrypt.hash(password, 10).then((hash) => {
+                    Users.create({
+                        firstName: firstName,
+                        lastName: lastName,
+                        email: email,
+                        password: hash
+                    })
+                    res.json("Successfully created Users")
+                })
+    
+            }
+        }
+        
+
     }
     catch (error) {
-        console.log("Error adding expense:", error);
-        res.status(500).json({ error: "Failed to add expense" });
+        console.error(error);
+        res.status(400).json({ error: error.message });
     }
 
 })

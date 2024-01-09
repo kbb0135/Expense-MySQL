@@ -3,6 +3,7 @@ const express = require('express'); //initializing express
 const router = express.Router()
 const { Users } = require("../models")
 const {sign} = require('jsonwebtoken')
+const {validateToken} = require("../Middleware/Auth")
 
 //bcrypt to hash user's password
 const bcrypt = require("bcrypt")
@@ -104,8 +105,14 @@ router.post('/login', async (req, res) => {
         res.status(400).json({ error: error.message });
     }
 })
-
-//exporting the file to index folder
+router.post('/authTokenValidation',validateToken, async(req,res)=> {
+    try {
+        res.json({isValid:true})
+    }
+    catch(error) {
+        res.status(500).json({ error: "Failed to validate" });
+    }
+})
 
 module.exports = router;
 

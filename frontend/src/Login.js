@@ -11,7 +11,7 @@ function Login() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const emailPattern = /^[\w.-]+@(gmail\.com|hotmail\.com|yahoo\.com|outlook\.com)$/i;
-    const navigate = useNavigate()
+   
     const handleLogin = async (e) => {
         e.preventDefault()
         if (email === "") {
@@ -49,7 +49,7 @@ function Login() {
                     toast.success("Login Sucessful")
                     await sessionStorage.setItem('accessToken', res.data);
                     setTimeout(() => {
-                        navigate("/")
+                        window.location.href = "http://localhost:3000/"
                     }, 1000)
 
                 })

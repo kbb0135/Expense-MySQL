@@ -5,7 +5,10 @@ const validateToken = (req, res, next) => {
     const accessToken = req.header("accessToken")
     //if there is no token provided by the user, send a 403 error message back
     if (!accessToken) {
-        return res.json({ error: "Insufficient privileges" })
+        return res.json({
+             error: "Insufficient privileges",
+             isValid: false
+     })
     }
     else {
         try {
@@ -15,7 +18,9 @@ const validateToken = (req, res, next) => {
             }
         }
         catch (error) {
-            return res.json({error:error})
+            return res.json({
+                error:"Something went wrong"
+            })
         }
 
     }

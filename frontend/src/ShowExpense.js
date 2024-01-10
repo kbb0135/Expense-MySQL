@@ -159,7 +159,6 @@ const ShowExpense = ({ item }) => {
     useEffect(() => {
 
         axios.get("http://localhost:7000/addexpense").then((response) => {
-            console.log(response.data)
             
             setData(response.data)
 

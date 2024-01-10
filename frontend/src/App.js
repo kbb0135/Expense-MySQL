@@ -46,7 +46,7 @@ function App() {
         }
       })
   }, [isValidToken])
-t
+
    useEffect(() => {
     console.log('isAdmin:', isValidToken);
   }, [isValidToken]);

@@ -10,7 +10,8 @@ import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 export default function Header() {
     const navigate = useNavigate();
-    const [isValidToken, setIsValidToken] = useState(false)
+    const [isValidToken, setIsValidToken] = useState(false) 
+    const [firstName, setFirstName] = useState("")
     useEffect(() => {
         axios.post("http://localhost:7000/auth/authTokenValidation",
             { data: 1 },
@@ -20,8 +21,9 @@ export default function Header() {
                 console.log(response)
             }
             else {
-                console.log(response.data.isValid);
+                
                 setIsValidToken(response.data.isValid)
+                setFirstName(response.data.firstName)
             }
         })
             .catch((error) => {
@@ -72,7 +74,7 @@ export default function Header() {
                                     <div className="nav-user">
                             <Dropdown>
                                 <Dropdown.Toggle variant="success" id="dropdown-basic">
-                                    Hello! User
+                                    Hello! {firstName}
                                 </Dropdown.Toggle>
 
                                 <Dropdown.Menu>

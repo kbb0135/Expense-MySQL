@@ -13,6 +13,8 @@ const validateToken = (req, res, next) => {
     else {
         try {
             const validToken = verify(accessToken, "I am logging in")
+            //accessing the userName where middleware is required
+            req.user = validToken
             if (validToken) {
                 return next();
             }

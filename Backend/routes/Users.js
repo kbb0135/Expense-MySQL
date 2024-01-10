@@ -83,6 +83,7 @@ router.post('/login', async (req, res) => {
                 throw new Error("Username or password do not match");
             }
             else {
+                console.log("userName====",user.firstName)
                 //we create a token here because all the requirements are fuilfilled
 
             const accessToken =sign(
@@ -100,13 +101,18 @@ router.post('/login', async (req, res) => {
         })
 
     } catch (error) {
+        
         console.error(error);
         res.status(400).json({ error: error.message });
     }
 })
 router.post('/authTokenValidation',validateToken, async(req,res)=> {
+    //acessingthe username fromthe token that we passed
+    const firstName = req.user.name
     try {
-        res.json({isValid:true})
+        res.json({isValid:true,
+                firstName:firstName,
+        })
     }
     catch(error) {
         res.status(500).json({ error: "Failed to validate" });

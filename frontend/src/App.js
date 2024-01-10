@@ -19,12 +19,10 @@ function App() {
       { headers: { accessToken: sessionStorage.getItem('accessToken') } }
     ).then(async(response) => {
       if (response.data.error) {
-        console.log(response)
-        console.log(response.data.isValid)
+        
         setIsValidToken(response.data.isValid)
       }
       else {
-        console.log(response.data.isValid);
        await  setIsValidToken(response.data.isValid)
       }
     })
@@ -47,9 +45,6 @@ function App() {
       })
   }, [isValidToken])
 
-   useEffect(() => {
-    console.log('isAdmin:', isValidToken);
-  }, [isValidToken]);
  
   return (
     <div className="App">

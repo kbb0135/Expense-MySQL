@@ -48,14 +48,14 @@ const ShowExpense = ({ item }) => {
         console.log(val)
     }
 
-    const handleSaveAmountChange = async() => {
-        if(!selectedSaving) return;
+    const handleSaveAmountChange = async () => {
+        if (!selectedSaving) return;
         const updatedSaving = {
             ...selectedSaving,
             saving: amount.toFixed(2)
         }
-        const updatedSavingData = saving.map((saveAmount)=> 
-        saveAmount.id === selectedSaving.id ? updatedSaving : saveAmount
+        const updatedSavingData = saving.map((saveAmount) =>
+            saveAmount.id === selectedSaving.id ? updatedSaving : saveAmount
         )
 
         setSaving(updatedSavingData)
@@ -63,26 +63,26 @@ const ShowExpense = ({ item }) => {
         var id = savingUID;
         setEditModal(false);
         setSelectedSaving(null)
-        console.log("TEST@@@==",updatedSaving.saving)
+        console.log("TEST@@@==", updatedSaving.saving)
 
         var updatedSavingValue = {
-            id:id,
-            saving:updatedSaving.saving
+            id: id,
+            saving: updatedSaving.saving
         }
-        console.log("Test=",updatedSavingValue)
+        console.log("Test=", updatedSavingValue)
 
         try {
-            axios.post("http://localhost:7000/updatesaving", updatedSavingValue).then((res)=> {
+            axios.post("http://localhost:7000/updatesaving", updatedSavingValue).then((res) => {
                 toast.success("Successfully updated data")
-            })  
+            })
         }
-        catch(error) {
+        catch (error) {
             console.log(error)
         }
 
     }
 
-    const handleSaveChanges = async() => {
+    const handleSaveChanges = async () => {
         if (!selectedExpense) return;
 
         // Update selectedExpense with the modified values
@@ -100,8 +100,8 @@ const ShowExpense = ({ item }) => {
         );
 
         setData(updatedData); // Update state with the updated data
-        
-        var id  = uid;
+
+        var id = uid;
         console.log("Selected ID=", id)
         // Close the modal and reset state
         setShowEditModal(false);
@@ -110,43 +110,43 @@ const ShowExpense = ({ item }) => {
 
         var updatedValue = {
             id: id,
-            expenseName:expenseName,
-            category:category,
-            price:price
+            expenseName: expenseName,
+            category: category,
+            price: price
         }
-        console.log("Test=",updatedValue)
+        console.log("Test=", updatedValue)
         try {
-            axios.post("http://localhost:7000/updateexpense", updatedValue).then((res)=> {
+            axios.post("http://localhost:7000/updateexpense", updatedValue).then((res) => {
                 toast.success("Successfully updated data")
-            })  
+            })
         }
-        catch(error) {
+        catch (error) {
             console.log(error)
         }
     };
 
     const deleteSaving = (id) => {
-        const savingData = saving.filter((val)=>val.id !== id)
+        const savingData = saving.filter((val) => val.id !== id)
         setSaving(savingData)
         try {
-            axios.post("http://localhost:7000/deletesaving", {id:id}).then(async(res)=> {
-            if(res.status) {
-                await toast.success("Successfully updated data")
-            }
-           
-        })
+            axios.post("http://localhost:7000/deletesaving", { id: id }).then(async (res) => {
+                if (res.status) {
+                    await toast.success("Successfully updated data")
+                }
+
+            })
         }
         catch {
             toast.error("Here")
         }
-        
-        
+
+
     }
-    const handleDelete = async(id) => {
+    const handleDelete = async (id) => {
         try {
             const updatedData = data.filter((expense) => expense.id !== id);
             setData(updatedData);
-            await axios.post("http://localhost:7000/deleteexpense", {id:id}).then(async(res)=> {
+            await axios.post("http://localhost:7000/deleteexpense", { id: id }).then(async (res) => {
                 await toast.success("Successfully updated data")
             })
         }
@@ -158,9 +158,22 @@ const ShowExpense = ({ item }) => {
 
     useEffect(() => {
 
-        axios.get("http://localhost:7000/addexpense").then((response) => {
-            
-            setData(response.data)
+        axios.post("http://localhost:7000/addexpense/showexpense",
+            { data: 1 },
+            { headers: { accessToken: sessionStorage.getItem('accessToken') } }
+        ).then((response) => {
+            if (response.data.error) {
+                console.log(response)
+
+            }
+            else {
+                console.log(response)
+                setData(response.data)
+                console.log(data)
+
+
+            }
+
 
         })
             .catch((error) => {
@@ -220,7 +233,7 @@ const ShowExpense = ({ item }) => {
                                         <td>${value.price}</td>
                                         <td>{value.createdAt}</td>
                                         <td><Button className="btn btn-warning" onClick={() => handleEdit(value)} >Edit</Button></td>
-                                        <td><Button className="btn btn-danger"  onClick={() => handleDelete(value.id)}>Delete</Button></td>
+                                        <td><Button className="btn btn-danger" onClick={() => handleDelete(value.id)}>Delete</Button></td>
                                     </tr>
                                 )
 
@@ -258,8 +271,8 @@ const ShowExpense = ({ item }) => {
                                     <td>{value.id}</td>
                                     <td>${value.saving}</td>
                                     <td>{value.createdAt}</td>
-                                    <td><Button className="btn btn-warning" onClick={()=>handleEditSave(value)} >Edit</Button></td>
-                                    <td><Button className="btn btn-danger" onClick={()=>deleteSaving(value.id)}>Delete</Button></td>
+                                    <td><Button className="btn btn-warning" onClick={() => handleEditSave(value)} >Edit</Button></td>
+                                    <td><Button className="btn btn-danger" onClick={() => deleteSaving(value.id)}>Delete</Button></td>
                                 </tr>
                             )
 
@@ -334,7 +347,7 @@ const ShowExpense = ({ item }) => {
                             </Modal.Body>
 
                             <Modal.Footer>
-                                <Button variant="danger" onClick={()=>setShowEditModal(false)}>Close</Button>
+                                <Button variant="danger" onClick={() => setShowEditModal(false)}>Close</Button>
                                 <Button variant="success" onClick={handleSaveChanges}>Save changes</Button>
                             </Modal.Footer>
                         </Modal.Dialog>
@@ -371,16 +384,16 @@ const ShowExpense = ({ item }) => {
                             </Modal.Body>
 
                             <Modal.Footer>
-                                <Button variant="danger" onClick={()=>setEditModal(false)}>Close</Button>
+                                <Button variant="danger" onClick={() => setEditModal(false)}>Close</Button>
                                 <Button variant="success" onClick={handleSaveAmountChange}>Save changes</Button>
                             </Modal.Footer>
                         </Modal.Dialog>
                     </div>
                 </Modal>
 
-                        
 
-                
+
+
 
 
             </div>

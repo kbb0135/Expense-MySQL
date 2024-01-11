@@ -27,14 +27,14 @@ module.exports = (sequelize, DataTypes) => {
         
         
     })
-    //creating interface to create database on the basis of users added
-    // Users.associate = (models) => {
-    //     Users.hasMany(models.AddExpense), {
-    //         onDelete:"cascade",
-    //     },
-    //     Users.hasMany(models.AddSaving), {
-    //         onDelete:"cascade",
-    //     }
-    // }
+   // creating interface to create database on the basis of users added
+    Users.associate = (models) => {
+        Users.hasMany(models.AddExpense), {
+            onDelete:"cascade",
+        },
+        Users.hasMany(models.AddSaving), {
+            onDelete:"cascade",
+        }
+    }
     return Users;
 }

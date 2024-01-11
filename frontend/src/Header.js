@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Nav from 'react-bootstrap/Nav';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate,useParams } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar'
 import Container from 'react-bootstrap/Container';
 import './Expense.css'
@@ -19,11 +19,14 @@ export default function Header() {
         ).then((response) => {
             if (response.data.error) {
                 console.log(response)
+                
             }
             else {
+                console.log(response)
                 
                 setIsValidToken(response.data.isValid)
                 setFirstName(response.data.firstName)
+                
             }
         })
             .catch((error) => {

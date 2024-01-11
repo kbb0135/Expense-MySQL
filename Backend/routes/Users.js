@@ -109,9 +109,11 @@ router.post('/login', async (req, res) => {
 router.post('/authTokenValidation',validateToken, async(req,res)=> {
     //acessingthe username fromthe token that we passed
     const firstName = req.user.name
+    const id = req.user.id
     try {
         res.json({isValid:true,
                 firstName:firstName,
+                id: id,
         })
     }
     catch(error) {

@@ -5,7 +5,7 @@ const {AddExpense} = require("../models")
 const {validateToken} = require("../Middleware/Auth")
 
 //API end point calls
-router.get("/",validateToken, async(req, res)=> {
+router.get("/", async(req, res)=> {
     //sending the whole table data 
     //in order to send the whole data from the table
     //we can use sequelize findALL

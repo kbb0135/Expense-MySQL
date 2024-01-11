@@ -34,10 +34,9 @@ const ShowExpense = ({ item }) => {
         setUid(expense.id)
         setSelectedExpense(expense)
         setShowEditModal(true)
-        console.log(expense)
         setExpenseName(expense.expenseName);
         setCategory(expense.category);
-        setAmount(parseFloat(expense.price));
+        setPrice(parseFloat(expense.price));
 
     }
 
@@ -46,6 +45,7 @@ const ShowExpense = ({ item }) => {
         setSelectedSaving(val)
         setEditModal(true)
         setAmount(parseFloat(val.saving))
+        console.log(val)
     }
 
     const handleSaveAmountChange = async() => {

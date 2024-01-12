@@ -17,7 +17,7 @@ export default function VisualChart() {
   const [isOpen, setIsOpen] = useState(false);
   const [totalSaving, setTotalSaving] = useState([])
   //for monthly report
-  const [monthData, setData] = useState([])
+  const [monthData, setMonthData] = useState([])
 
 
 
@@ -76,7 +76,7 @@ export default function VisualChart() {
             }
             else {
                 console.log(response.data)
-                setData(response.data)
+                setMonthData(response.data)
             }
         })
         
@@ -149,12 +149,12 @@ export default function VisualChart() {
     "#FF3370",
     "#70FF33",
     "#3357FF",
-    "#FFD633",
+    "#FAD633",
     "#6333FF",
     "#FF336E",
     "#33FFD6",
     "#336EFF",
-    "#D633FF",]; // Define your color palette
+    "#D633FF",]; 
     return colors[index % colors.length]; // Get color based on index (using modulus for cycling through colors)
   };
 
@@ -390,41 +390,16 @@ export default function VisualChart() {
       <div className="div-center">
                   <h1>Visual Expense of Bar-Chart</h1>
                 </div>
-              <div className="d-flex align-items-center justify-content-center">
-                
-
-                <div className="chart-container">
-                  <Chart
-                    chartType="ColumnChart"
-                    data={[["Category", "Total in $", { role: "style" }], ...chartData]}
-                    options={options}
-                    width={500}
-                    height={500}
-                  />
-                </div>
-              </div>
-
-              <br></br>
-              <br></br>
-              <hr></hr>
-              <div>
-              <div className="div-center">
-                  <h1>Visual Chart of Monthly-Expense</h1>
-                </div>
-            <Chart
-                width={'100%'}
-                height={'400px'}
-                chartType="ColumnChart"
-                loader={<div>Loading Chart...</div>}
-                data={ chartMonthlyData}
-                options={{
-                    title: 'Monthly Expenses by Category',
-                    chartArea: { width: '50%' },
-                    hAxis: { title: 'Total Expenses', minValue: 0 },
-                    vAxis: { title: 'Category' },
-                }}
+                <Chart
+              chartType="ColumnChart"
+              data={[["Category", "Total in $", { role: "style" }], ...chartData]}
+              options={options}
+              width={800}
+              height={400}
             />
-        </div>
+              
+
+              
     </div>
   )
 }

@@ -8,9 +8,10 @@ import './Expense.css'
 import Dropdown from 'react-bootstrap/Dropdown';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 export default function Header() {
     const navigate = useNavigate();
-    const [isValidToken, setIsValidToken] = useState(false) 
+    const [isValidToken, setIsValidToken] = useState(false)
     const [firstName, setFirstName] = useState("")
     useEffect(() => {
         axios.post("http://localhost:7000/auth/authTokenValidation",
@@ -19,14 +20,14 @@ export default function Header() {
         ).then((response) => {
             if (response.data.error) {
                 console.log(response)
-                
+
             }
             else {
                 console.log(response)
-                
+
                 setIsValidToken(response.data.isValid)
                 setFirstName(response.data.firstName)
-                
+
             }
         })
             .catch((error) => {
@@ -46,14 +47,14 @@ export default function Header() {
                 }
             })
     }, [])
-    const handleLogOut = async() => {
+    const handleLogOut = async () => {
 
         await sessionStorage.removeItem('accessToken')
-        if(!localStorage.getItem('accessToken')) {
+        if (!localStorage.getItem('accessToken')) {
             toast.success("Succesfully Logged Out");
-            await setTimeout(() =>{
+            await setTimeout(() => {
                 navigate("/login")
-            },2000)
+            }, 2000)
         }
 
     }
@@ -73,29 +74,37 @@ export default function Header() {
                                     <Nav.Link><Link to="/showExpense" className="nav-link">Show Expense</Link></Nav.Link>
                                     <Nav.Link><Link to="/addsaving" className="nav-link">Add Saving</Link></Nav.Link>
                                     <Nav.Link><Link to="/addexpense" className="nav-link">Add Expense</Link></Nav.Link>
-                                    <Nav.Link><Link to="/visualizeexpense" className="nav-link">Visualize Expense</Link></Nav.Link>
+                                    <Nav.Link>
+                                    <DropdownButton id="dropdown-basic-button" title="Visualize Expense" variant="info">
+                                        <Dropdown.Item ><Link to="/monthdata" className="nav-link">Monthly Expense</Link></Dropdown.Item>
+                                        <Dropdown.Item ><Link to="/visualizeexpense" className="nav-link">Visualize Expense</Link></Dropdown.Item>
+                                        <Dropdown.Item ><Link to="/categorizebymonths" className="nav-link">Compare Monthly Expense</Link></Dropdown.Item>
+                                    </DropdownButton>
+                                    </Nav.Link>
+                                    <Nav.Link>
                                     <div className="nav-user">
-                            <Dropdown>
-                                <Dropdown.Toggle variant="success" id="dropdown-basic">
-                                    Hello! {firstName}
-                                </Dropdown.Toggle>
+                                        <Dropdown>
+                                            <Dropdown.Toggle variant="success" id="dropdown-basic">
+                                                Hello! {firstName}
+                                            </Dropdown.Toggle>
 
-                                <Dropdown.Menu>
-                                    <Dropdown.Item >User Preference</Dropdown.Item>
-                                    <Dropdown.Item onClick={()=>handleLogOut()}>LogOut</Dropdown.Item>
-                                </Dropdown.Menu>
-                            </Dropdown>
-                        </div>
+                                            <Dropdown.Menu>
+                                                <Dropdown.Item >User Preference</Dropdown.Item>
+                                                <Dropdown.Item onClick={() => handleLogOut()}>LogOut</Dropdown.Item>
+                                            </Dropdown.Menu>
+                                        </Dropdown>
+                                    </div>
+                                    </Nav.Link>
                                 </>
                             ) : (
                                 <>
-                                <Nav.Link><Link to="/login" className="nav-link">Login</Link></Nav.Link>
-                        <Nav.Link><Link to="/register" className="nav-link">Register</Link></Nav.Link>  `</>
+                                    <Nav.Link><Link to="/login" className="nav-link">Login</Link></Nav.Link>
+                                    <Nav.Link><Link to="/register" className="nav-link">Register</Link></Nav.Link>  `</>
                             )
                         }
 
-                        
-                        
+
+
 
 
 

@@ -9,7 +9,8 @@ import Registration from './Registration';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Unauthorized from './Unauthorized';
-import Test from './Test';
+import CategorizeMonth from './CategorizeMonth';
+import MonthlyData from './MonthlyData';
 
 
 function App() {
@@ -56,7 +57,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registration />} />
-          <Route path="/test" element={<Test />} />
+          
           {/* <Routes>
           <Route path="*" element={<Home />} />
         </Routes> */}
@@ -67,7 +68,8 @@ function App() {
               <Route path="/addexpense" element={<AddExpense />} />
               <Route path="/visualizeexpense" element={<Chart />} />
               <Route path="/addsaving" element={<AddSaving />} />
-              
+              <Route path="/monthdata" element={<MonthlyData />} />
+          <Route path="/categorizebymonths" element={<CategorizeMonth />} />
             </>
           ) : (
             <>

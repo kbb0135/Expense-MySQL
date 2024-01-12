@@ -18,13 +18,12 @@ const ShowExpense = ({ item }) => {
     const [expenseName, setExpenseName] = useState("")
     const [category, setCategory] = useState("")
     const [price, setPrice] = useState(0)
-    const [saveExpense, setSaveExpense] = useState([])
+    
     const [uid, setUid] = useState(0)
     //------------------------------------------------------------------------------
     const [editModal, setEditModal] = useState(false);
-    const [selectedSaving, setSelectedSaving] = useState(null);
-    const [saveData, setSaveData] = useState([])
-    const [savingAmount, setSavingAmount] = useState([])
+    const [selectedSaving, setSelectedSaving] = useState(null)
+    
     const [amount, setAmount] = useState(0)
     const [savingUID, setSavingUID] = useState(0)
 
@@ -106,7 +105,7 @@ const ShowExpense = ({ item }) => {
         // Close the modal and reset state
         setShowEditModal(false);
         setSelectedExpense(null);
-        setSaveExpense(null);
+        
 
         var updatedValue = {
             id: id,
@@ -192,8 +191,8 @@ const ShowExpense = ({ item }) => {
             }
             else {
                 setSaving(response.data)
-                setSavingAmount(response.data)
-                console.log("saving", saving)
+               
+                
             }
 
 

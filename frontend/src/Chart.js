@@ -7,7 +7,7 @@ import './Expense.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
-import Carousel from 'react-bootstrap/Carousel';
+// import Carousel from 'react-bootstrap/Carousel';
 import toast from 'react-hot-toast';
 
 
@@ -16,6 +16,10 @@ export default function VisualChart() {
   const [isClick, setIsClick] = useState(false)
   const [isOpen, setIsOpen] = useState(false);
   const [totalSaving, setTotalSaving] = useState([])
+  //for monthly report
+  const [monthData, setData] = useState([])
+
+
 
   //keeping track of the button that shows details about the expenditure
   const buttonClick = () => {
@@ -43,7 +47,7 @@ export default function VisualChart() {
             else {
                 console.log(response)
                 setItem(response.data)
-                console.log(data)
+              
 
 
             }
@@ -63,7 +67,44 @@ export default function VisualChart() {
         console.log(error.response.status)
       })
 
+      axios.get("http://localhost:7000/addexpense",
+            { headers: { accessToken: sessionStorage.getItem('accessToken') } }
+        ).then(async (response) => {
+            if (response.data.error) {
+                console.log(response.data.error)
+
+            }
+            else {
+                console.log(response.data)
+                setData(response.data)
+            }
+        })
+        
+
   }, [])
+
+  const chartMonthlyData = [['Category', ...Object.keys(monthData)]];
+    console.log("chartMonthlyData=", chartMonthlyData)
+
+    // Get all unique categories and will ignore the duplicates 
+    const allCategories = [...new Set(Object.values(monthData).flatMap(expenses => expenses.map(expense => expense.category)))];
+
+    // Populate chart data 
+    allCategories.forEach(category => {
+        const row = [category];
+
+        Object.keys(monthData).forEach(month => {
+            const totalForCategory = monthData[month]
+                .filter(expense => expense.category === category)
+                .reduce((total, expense) => total + expense.price, 0);
+
+            row.push(totalForCategory);
+        });
+
+        chartMonthlyData.push(row);
+
+    });
+    console.log("charDataFinal=", chartMonthlyData)
   const groupPrices = {};
   var overallTotal = 0;
   item.forEach(element => {
@@ -362,6 +403,28 @@ export default function VisualChart() {
                   />
                 </div>
               </div>
+
+              <br></br>
+              <br></br>
+              <hr></hr>
+              <div>
+              <div className="div-center">
+                  <h1>Visual Chart of Monthly-Expense</h1>
+                </div>
+            <Chart
+                width={'100%'}
+                height={'400px'}
+                chartType="ColumnChart"
+                loader={<div>Loading Chart...</div>}
+                data={ chartMonthlyData}
+                options={{
+                    title: 'Monthly Expenses by Category',
+                    chartArea: { width: '50%' },
+                    hAxis: { title: 'Total Expenses', minValue: 0 },
+                    vAxis: { title: 'Category' },
+                }}
+            />
+        </div>
     </div>
   )
 }

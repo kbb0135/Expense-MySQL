@@ -55,27 +55,13 @@ export default function VisualChart() {
                     toast.error(error.response.status)
                 }
             })
-    
-      axios.post("http://localhost:7000/addsaving/showsaving",
-            { data: 1 },
-            { headers: { accessToken: sessionStorage.getItem('accessToken') } }
-        ).then((response) => {
-            if (response.data.error) {
-                console.log(response)
-
-            }
-            else {
-              setTotalSaving(response.data)
-                console.log("saving", saving)
-            }
-
-
-        })
-            .catch((error) => {
-                if (error.response) {
-                    toast.error(error.response.status)
-                }
-            })
+    axios.get("http://localhost:7000/addSaving").then((response) => {
+      setTotalSaving(response.data)
+      console.log(response.data)
+    })
+      .catch((error) => {
+        console.log(error.response.status)
+      })
 
   }, [])
   const groupPrices = {};
@@ -155,12 +141,31 @@ export default function VisualChart() {
   return (
     <div>
       <Header />
+      
+
+
+
+
       <div>
+      <div className="div-center">
+                <h1>Expenditure Representation in PieChart</h1>
+              </div>
+              <div className="d-flex align-items-center justify-content-center">
+              <div className="chart-container">
+                <Chart
+                  chartType="PieChart"
+                  data={[["Category", "Total"], ...pieData]}
+                  options={options}
+                  width={2000}
+                  height={400}
+                />
+                </div>
+              </div>
 
 
 
         <div>
-          <Carousel data-bs-theme="dark" slide={false}>
+          {/* <Carousel data-bs-theme="dark" slide={false}>
             <Carousel.Item slide={false}>
               <div className="div-center">
                 <h1>Expenditure Representation in PieChart</h1>
@@ -171,8 +176,8 @@ export default function VisualChart() {
                   chartType="PieChart"
                   data={[["Category", "Total"], ...pieData]}
                   options={options}
-                  width={"200%"}
-                  height={"400px"}
+                  width={2000}
+                  height={400}
                 />
                 </div>
               </div>
@@ -190,13 +195,13 @@ export default function VisualChart() {
                     chartType="ColumnChart"
                     data={[["Category", "Total in $", { role: "style" }], ...chartData]}
                     options={options}
-                    width={"200%"}
-                    height={"400px"}
+                    width={200}
+                    height={400}
                   />
                 </div>
               </div>
             </Carousel.Item>
-          </Carousel>
+          </Carousel> */}
         </div>
 
         <div>
@@ -277,7 +282,7 @@ export default function VisualChart() {
                             <>
                               <h5>On average, you save ${TotalSaving().toFixed(2)} more than<br></br>
                                 you spend. The total expenditure for all the categories that <br></br>
-                                you provided is ${overallTotal.toFixed(2)}, while the amount you've saved is ${saving.toFixed(2)}.<br></br>
+                                you provided is ${overallTotal}, while the amount you've saved is ${saving}.<br></br>
                                 It's great to see you're maintaining positive savings. Keep up the good work by staying mindful of your expenses!</h5>
 
                             </>
@@ -285,7 +290,7 @@ export default function VisualChart() {
                             <>
                               <h5>On Average, you spend ${-1 * TotalSaving().toFixed(2)} more than<br></br>
                                 you save. The total expenditure for all the categories that <br></br>
-                                you provided is ${overallTotal.toFixed(2)} while the amount you save for this is ${saving.toFixed(2)}.<br></br>
+                                you provided is ${overallTotal} while the amount you save for this is ${saving}.<br></br>
                                 Please make sure that you are keeping track of your expenses to be in a positive term.</h5>
 
 
@@ -330,6 +335,22 @@ export default function VisualChart() {
 
         </div>
       </div>
+      <div className="div-center">
+                  <h1>Visual Expense of Bar-Chart</h1>
+                </div>
+              <div className="d-flex align-items-center justify-content-center">
+                
+
+                <div className="chart-container">
+                  <Chart
+                    chartType="ColumnChart"
+                    data={[["Category", "Total in $", { role: "style" }], ...chartData]}
+                    options={options}
+                    width={500}
+                    height={500}
+                  />
+                </div>
+              </div>
     </div>
   )
 }

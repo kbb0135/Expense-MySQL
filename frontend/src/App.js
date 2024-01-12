@@ -63,7 +63,6 @@ function App() {
         </Routes> */}
           {isValidToken ? (
             <>
-
               <Route path="/showexpense" element={<ShowExpense />} />
               <Route path="/addexpense" element={<AddExpense />} />
               <Route path="/visualizeexpense" element={<Chart />} />

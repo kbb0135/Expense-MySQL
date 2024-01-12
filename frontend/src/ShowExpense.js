@@ -182,11 +182,21 @@ const ShowExpense = ({ item }) => {
                 }
             })
 
-        axios.get("http://localhost:7000/addsaving").then((response) => {
+        axios.post("http://localhost:7000/addsaving/showsaving",
+            { data: 1 },
+            { headers: { accessToken: sessionStorage.getItem('accessToken') } }
+        ).then((response) => {
+            if (response.data.error) {
+                console.log(response)
 
-            setSaving(response.data)
-            setSavingAmount(response.data)
-            console.log("saving", saving)
+            }
+            else {
+                setSaving(response.data)
+                setSavingAmount(response.data)
+                console.log("saving", saving)
+            }
+
+
         })
             .catch((error) => {
                 if (error.response) {
@@ -212,7 +222,7 @@ const ShowExpense = ({ item }) => {
                         <thead>
                             {/* data obtained with the header value */}
                             <tr>
-                                <th>ID</th>
+                                {/* <th>ID</th> */}
                                 <th>Expense Name</th>
                                 <th>Category</th>
                                 <th>Price($)</th>
@@ -227,7 +237,7 @@ const ShowExpense = ({ item }) => {
                             {data.map((value, key) => {
                                 return (
                                     <tr key={key}>
-                                        <td>{value.id}</td>
+                                        {/* <td>{value.id}</td> */}
                                         <td>{value.expenseName}</td>
                                         <td>{value.category}</td>
                                         <td>${value.price}</td>
@@ -256,7 +266,7 @@ const ShowExpense = ({ item }) => {
                     <thead>
                         {/* data obtained with the header value */}
                         <tr>
-                            <th>ID</th>
+                            {/* <th>ID</th> */}
                             <th>Amount Saved</th>
                             <th>Creation Date</th>
                             <th bg="danger">Edit</th>
@@ -268,7 +278,7 @@ const ShowExpense = ({ item }) => {
                         {saving.map((value, key) => {
                             return (
                                 <tr key={key}>
-                                    <td>{value.id}</td>
+                                    {/* <td>{value.id}</td> */}
                                     <td>${value.saving}</td>
                                     <td>{value.createdAt}</td>
                                     <td><Button className="btn btn-warning" onClick={() => handleEditSave(value)} >Edit</Button></td>

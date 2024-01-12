@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Button from 'react-bootstrap/Button';
 import Badge from 'react-bootstrap/Badge';
 import Carousel from 'react-bootstrap/Carousel';
+import toast from 'react-hot-toast';
 
 
 
@@ -27,26 +28,54 @@ export default function VisualChart() {
     }
   }
   //show the whole detail of saving and spending 
-
+// 
   const [item, setItem] = useState([])
   useEffect(() => {
 
-    axios.get("http://localhost:7000/addexpense").then((response) => {
-      setItem(response.data)
-      // console.log(response.data)
-    })
-      .catch((error) => {
-        if (error.response) {
-          console.log(error.response.status)
-        }
-      })
-    axios.get("http://localhost:7000/addSaving").then((response) => {
-      setTotalSaving(response.data)
-      console.log(response.data)
-    })
-      .catch((error) => {
-        console.log(error.response.status)
-      })
+    axios.post("http://localhost:7000/addexpense/showexpense",
+            { data: 1 },
+            { headers: { accessToken: sessionStorage.getItem('accessToken') } }
+        ).then((response) => {
+            if (response.data.error) {
+                console.log(response)
+
+            }
+            else {
+                console.log(response)
+                setItem(response.data)
+                console.log(data)
+
+
+            }
+
+
+        })
+            .catch((error) => {
+                if (error.response) {
+                    toast.error(error.response.status)
+                }
+            })
+    
+      axios.post("http://localhost:7000/addsaving/showsaving",
+            { data: 1 },
+            { headers: { accessToken: sessionStorage.getItem('accessToken') } }
+        ).then((response) => {
+            if (response.data.error) {
+                console.log(response)
+
+            }
+            else {
+              setTotalSaving(response.data)
+                console.log("saving", saving)
+            }
+
+
+        })
+            .catch((error) => {
+                if (error.response) {
+                    toast.error(error.response.status)
+                }
+            })
 
   }, [])
   const groupPrices = {};
@@ -248,7 +277,7 @@ export default function VisualChart() {
                             <>
                               <h5>On average, you save ${TotalSaving().toFixed(2)} more than<br></br>
                                 you spend. The total expenditure for all the categories that <br></br>
-                                you provided is ${overallTotal}, while the amount you've saved is ${saving}.<br></br>
+                                you provided is ${overallTotal.toFixed(2)}, while the amount you've saved is ${saving.toFixed(2)}.<br></br>
                                 It's great to see you're maintaining positive savings. Keep up the good work by staying mindful of your expenses!</h5>
 
                             </>
@@ -256,7 +285,7 @@ export default function VisualChart() {
                             <>
                               <h5>On Average, you spend ${-1 * TotalSaving().toFixed(2)} more than<br></br>
                                 you save. The total expenditure for all the categories that <br></br>
-                                you provided is ${overallTotal} while the amount you save for this is ${saving}.<br></br>
+                                you provided is ${overallTotal.toFixed(2)} while the amount you save for this is ${saving.toFixed(2)}.<br></br>
                                 Please make sure that you are keeping track of your expenses to be in a positive term.</h5>
 
 

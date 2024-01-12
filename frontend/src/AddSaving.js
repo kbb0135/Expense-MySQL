@@ -22,14 +22,33 @@ export default function AddSaving() {
                 "saving": price.toFixed(2),
             }
 
-            axios.post("http://localhost:7000/addsaving", data).then((response) => {
-                try {
-                    toast.success("Successfully inserted data")
+            axios.post("http://localhost:7000/addsaving", data,
+                {
+                    headers: { accessToken: sessionStorage.getItem("accessToken") }
+                },
+            ).then((response) => {
+                if (response.data.error) {
+
+                    try {
+                        toast.error(response.data.error)
+                        console.log(response)
+                        console.log(sessionStorage.getItem("accessToken"))
+                    }
+
+                    catch {
+                    }
                 }
-                catch {
+                else {
+                    toast.success("Data added successfully")
                 }
+
             })
+                .catch((error) => {
+                    toast.error("Error in inserting data", error)
+                })
+
         }
+
     }
     return (
         <div>

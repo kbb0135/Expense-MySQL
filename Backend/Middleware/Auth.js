@@ -21,7 +21,7 @@ const validateToken = (req, res, next) => {
         }
         catch (error) {
             return res.json({
-                error:"Something went wrong"
+                error:"JSON token malfunction"
             })
         }
 

@@ -27,6 +27,7 @@ router.post("/showexpense", validateToken, async (req, res) => {
 router.post("/", validateToken, async (req, res) => {
 
     try {
+        
         const id = req.user.id
         const { expenseName, category, price } = req.body;
         const expenseAdd = {

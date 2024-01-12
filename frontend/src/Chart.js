@@ -102,7 +102,18 @@ export default function VisualChart() {
   const getColorForCategory = (category, index) => {
     // You can define your logic to assign colors here based on category name or index
     // For example, generating random colors based on index:
-    const colors = ["#ff0000", "#00ff00", "#0000ff"]; // Define your color palette
+    const colors = ["#FF5733",
+    "#33FF57",
+    "#5733FF",
+    "#FF3370",
+    "#70FF33",
+    "#3357FF",
+    "#FFD633",
+    "#6333FF",
+    "#FF336E",
+    "#33FFD6",
+    "#336EFF",
+    "#D633FF",]; // Define your color palette
     return colors[index % colors.length]; // Get color based on index (using modulus for cycling through colors)
   };
 
@@ -231,7 +242,7 @@ export default function VisualChart() {
                       return (
                         <tr>
                           <td>{value.category}</td>
-                          <td>${value.total}</td>
+                          <td>${value.total.toFixed(2)}</td>
                         </tr>
                       )
 

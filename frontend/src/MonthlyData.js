@@ -62,6 +62,7 @@ export default function MonthlyData() {
       getColorForCategory(item.category, index),
       ]);
     setBarData(BarValue)
+    console.log(BarValue)
 
 
 

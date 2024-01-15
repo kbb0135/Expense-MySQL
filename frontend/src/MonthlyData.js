@@ -8,7 +8,7 @@ import Table from 'react-bootstrap/Table'
 import './Expense.css'
 import toast, { Toaster } from 'react-hot-toast'
 export default function MonthlyData() {
-  const [monthData, setMonthData] = useState([])
+  const [monthData, setMonthData] = useState([null])
   const [category, setCategory] = useState("")
   const [pieChartData, setPieChartData] = useState([])
   const [BarData, setBarData] = useState([])
@@ -22,6 +22,8 @@ export default function MonthlyData() {
   const showData = () => {
     const groupPrices = {};
     var overallTotal = 0;
+      
+    
     monthData[category].forEach(element => {
       if (!groupPrices[element.category]) {
         groupPrices[element.category] = {
@@ -72,7 +74,6 @@ export default function MonthlyData() {
       item.total
       ]);
     setPieChartData(pieData)
-
 
   }
 
@@ -193,8 +194,10 @@ export default function MonthlyData() {
       </div>
       <div>
         <div>
+        
           {
-            pieChartData.length > 0 ? (
+            
+            monthData !== null && pieChartData.length > 0 ? (
               <>
                 <Table striped bordered hover>
                   <thead>
@@ -210,6 +213,7 @@ export default function MonthlyData() {
                   </thead>
                   {/* maping the data we fetched from the db */}
                   <tbody>
+                    
 
                     {monthData[category].map((value, key) => {
                       return (

@@ -14,20 +14,19 @@ router.post("/", async(req, res)=> {
     try {
         const updateSaving = req.body;
         const updateData = await AddSaving.findOne({ where: { id: updateSaving.id } });
-        console.log(updateData)
         await updateData.update(
             {
                saving:updateSaving.saving
              }
             )
-        console.log("value check=",updateData.saving)
+       
 
         // await updateData.update(expenseAdd); // Updated line
         await updateData.save();
         res.json(updateData);
     }
     catch (error) {
-        console.log("Error adding expense:", error);
+     
         res.status(500).json({ error: "Failed to add expense" });
     }
 })

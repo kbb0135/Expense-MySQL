@@ -38,9 +38,9 @@ router.post("/showexpense", validateToken, async (req, res) => {
 
 
     const id = await req.user.id
-    console.log(id)
+    
     const expenseData = await AddExpense.findAll({ where: { UserId: id } });
-    console.log("expense=", expenseData)
+   
 
     res.json(expenseData)
 
@@ -67,7 +67,7 @@ router.post("/", validateToken, async (req, res) => {
         res.json(expenseAdd);
     }
     catch (error) {
-        console.log("Error adding expense:", error);
+        
         res.status(500).json({ error: "Failed to add expense" });
     }
 

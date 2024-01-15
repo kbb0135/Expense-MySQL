@@ -71,10 +71,31 @@ const ShowExpense = ({ item }) => {
         console.log("Test=", updatedSavingValue)
 
         try {
-            axios.post("http://localhost:7000/updatesaving", updatedSavingValue).then((res) => {
-                toast.success("Successfully updated data")
+            axios.post("http://localhost:7000/updatesaving", updatedSavingValue).then((response) => {
+                if (response.data.error) {
+                    toast.error(response.data.error)
+                }
+                else {
+                    toast.success("Successfully updated data")
+                }
+            })
+            .catch((error) => {
+                if (error.response) {
+                    toast.error(error.response.data.error)
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    console.error("Server responded with status code:", error.response.status);
+                    console.error("Error data:", error.response.data.error);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    toast.error("No response received:", error.request);
+                } else {
+                    // Something happened in setting up the request that triggered the error
+                    console.error("Error:", error.message);
+                }
             })
         }
+        
         catch (error) {
             console.log(error)
         }
@@ -113,11 +134,38 @@ const ShowExpense = ({ item }) => {
             category: category,
             price: price
         }
-        console.log("Test=", updatedValue)
+        
         try {
-            axios.post("http://localhost:7000/updateexpense", updatedValue).then((res) => {
-                toast.success("Successfully updated data")
+            // axios.post("http://localhost:7000/updateexpense", updatedValue).then((res) => {
+            //     toast.success("Successfully updated data")
+            // })
+            axios.post("http://localhost:7000/updateexpense", updatedValue,
+            {headers: {accessToken: sessionStorage.getItem("accessToken")}
+           },
+            ).then((response) => {
+                if (response.data.error) {
+                    toast.error(response.data.error)
+                }
+                else {
+                    toast.success("Successfully updated data")
+                }
             })
+            .catch((error) => {
+                if (error.response) {
+                    toast.error(error.response.data.error)
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    console.error("Server responded with status code:", error.response.status);
+                    console.error("Error data:", error.response.data.error);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    toast.error("No response received:", error.request);
+                } else {
+                    // Something happened in setting up the request that triggered the error
+                    console.error("Error:", error.message);
+                }
+            })
+
         }
         catch (error) {
             console.log(error)
@@ -126,17 +174,41 @@ const ShowExpense = ({ item }) => {
 
     const deleteSaving = (id) => {
         const savingData = saving.filter((val) => val.id !== id)
+
         setSaving(savingData)
+        console.log(id)
         try {
-            axios.post("http://localhost:7000/deletesaving", { id: id }).then(async (res) => {
-                if (res.status) {
-                    await toast.success("Successfully updated data")
+            axios.post("http://localhost:7000/deletesaving/",
+            
+             { id: id },
+             { headers: { accessToken: sessionStorage.getItem('accessToken') } }).then(async (res) => {
+                if(res.data.error) {
+                    toast.error(res.data.error)
+                  
+                }
+                else {
+                    toast.success("Successfully Deleted")
                 }
 
             })
+            .catch((error) => {
+                if (error.response) {
+                    toast.error(error.response.data.error)
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    console.error("Server responded with status code:", error.response.status);
+                    console.error("Error data:", error.response.data.error);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    toast.error("No response received:", error.request);
+                } else {
+                    // Something happened in setting up the request that triggered the error
+                    console.error("Error:", error.message);
+                }
+            })
         }
-        catch {
-            toast.error("Here")
+        catch(error) {
+            toast.error("Failed to delete saving");
         }
 
 
@@ -144,9 +216,35 @@ const ShowExpense = ({ item }) => {
     const handleDelete = async (id) => {
         try {
             const updatedData = data.filter((expense) => expense.id !== id);
-            setData(updatedData);
-            await axios.post("http://localhost:7000/deleteexpense", { id: id }).then(async (res) => {
+            
+
+            axios.post("http://localhost:7000/deleteexpense",
+             { id: id },{headers: {accessToken: sessionStorage.getItem("accessToken")}
+            }).then(async (res) => {
+            if (res.data.error) {
+                toast.error(res.data.error)
+            }
+            else {
                 await toast.success("Successfully updated data")
+                setData(updatedData);
+            }
+
+                
+            })
+            .catch((error) => {
+                if (error.response) {
+                    toast.error(error.response.data.error)
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    console.error("Server responded with status code:", error.response.status);
+                    console.error("Error data:", error.response.data.error);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    toast.error("No response received:", error.request);
+                } else {
+                    // Something happened in setting up the request that triggered the error
+                    console.error("Error:", error.message);
+                }
             })
         }
 
@@ -233,6 +331,7 @@ const ShowExpense = ({ item }) => {
                         </thead>
                         {/* maping the data we fetched from the db */}
                         <tbody>
+                            
                             {data.map((value, key) => {
                                 return (
                                     <tr key={key}>

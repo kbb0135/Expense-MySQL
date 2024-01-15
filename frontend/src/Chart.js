@@ -12,6 +12,7 @@ import toast from 'react-hot-toast';
 
 
 
+
 export default function VisualChart() {
   const [isClick, setIsClick] = useState(false)
   const [isOpen, setIsOpen] = useState(false);
@@ -54,17 +55,41 @@ export default function VisualChart() {
 
 
         })
-            .catch((error) => {
-                if (error.response) {
-                    toast.error(error.response.status)
-                }
-            })
-    axios.get("http://localhost:7000/addSaving").then((response) => {
-      setTotalSaving(response.data)
-      console.log(response.data)
-    })
+        .catch((error) => {
+          if (error.response) {
+              toast.error(error.response.data.error)
+              // The request was made and the server responded with a status code
+              // that falls out of the range of 2xx
+              console.error("Server responded with status code:", error.response.status);
+              console.error("Error data:", error.response.data.error);
+          } else if (error.request) {
+              // The request was made but no response was received
+              toast.error("No response received:", error.request);
+          } else {
+              // Something happened in setting up the request that triggered the error
+              console.error("Error:", error.message);
+          }
+      })
+      axios.post("http://localhost:7000/addsaving/showsaving",
+      { data: 1 },
+      { headers: { accessToken: sessionStorage.getItem('accessToken') } }
+  ).then((response) => {
+      if (response.data.error) {
+          console.log(response)
+
+      }
+      else {
+        setTotalSaving(response.data)
+         
+          
+      }
+
+
+  })
       .catch((error) => {
-        console.log(error.response.status)
+          if (error.response) {
+              toast.error(error.response.status)
+          }
       })
 
       axios.get("http://localhost:7000/addexpense",

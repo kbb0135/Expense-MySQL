@@ -19,13 +19,13 @@ function App() {
     axios.post("http://localhost:7000/auth/authTokenValidation",
       { data: 1 },
       { headers: { accessToken: sessionStorage.getItem('accessToken') } }
-    ).then(async(response) => {
+    ).then(async (response) => {
       if (response.data.error) {
-        
+
         setIsValidToken(response.data.isValid)
       }
       else {
-       await  setIsValidToken(response.data.isValid)
+        await setIsValidToken(response.data.isValid)
       }
     })
       .catch((error) => {
@@ -47,7 +47,9 @@ function App() {
       })
   }, [isValidToken])
 
- 
+
+
+
   return (
     <div className="App">
 
@@ -57,7 +59,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registration />} />
-          
+
           {/* <Routes>
           <Route path="*" element={<Home />} />
         </Routes> */}
@@ -68,20 +70,22 @@ function App() {
               <Route path="/visualizeexpense" element={<Chart />} />
               <Route path="/addsaving" element={<AddSaving />} />
               <Route path="/monthdata" element={<MonthlyData />} />
-          <Route path="/categorizebymonths" element={<CategorizeMonth />} />
+              <Route path="/categorizebymonths" element={<CategorizeMonth />} />
             </>
           ) : (
             <>
 
-              <Route path="/showexpense" element={<Navigate to ="/unauthorized" />} />
-              <Route path="/addexpense" element={<Navigate to ="/unauthorized" />} />
-              <Route path="/visualizeexpense"  element={<Navigate to ="/unauthorized" />} />
-              <Route path="/addsaving"  element={<Navigate to ="/unauthorized" />} />
+              <Route path="/showexpense" element={<Navigate to="/unauthorized" />} />
+              <Route path="/addexpense" element={<Navigate to="/unauthorized" />} />
+              <Route path="/visualizeexpense" element={<Navigate to="/unauthorized" />} />
+              <Route path="/addsaving" element={<Navigate to="/unauthorized" />} />
+              <Route path="/monthdata" element={<Navigate to="/unauthorized" />} />
+              <Route path="/categorizebymonths" element={<Navigate to="/unauthorized" />} />
             </>
           )}
           <Route path="/unauthorized"
-           element={<Unauthorized />}
-            />
+            element={<Unauthorized />}
+          />
 
 
         </Routes>

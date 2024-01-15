@@ -84,7 +84,6 @@ export default function VisualChart() {
           
       }
 
-
   })
       .catch((error) => {
           if (error.response) {

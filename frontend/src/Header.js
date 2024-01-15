@@ -102,12 +102,6 @@ export default function Header() {
                                     <Nav.Link><Link to="/register" className="nav-link">Register</Link></Nav.Link>  `</>
                             )
                         }
-
-
-
-
-
-
                     </Nav>
                 </Container>
             </Navbar>

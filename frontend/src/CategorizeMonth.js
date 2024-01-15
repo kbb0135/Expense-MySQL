@@ -5,12 +5,14 @@ import { Chart } from 'react-google-charts'
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Table from 'react-bootstrap/Table'
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function CategorizeMonth() {
     const [monthData, setMonthData] = useState([])
     const [category1, setCategory1] = useState("")
     const [category2, setCategory2] = useState("")
-    const [data, setData] = useState([0])
+    const [data, setData] = useState([])
+    console.log(data)
 
 
     useEffect(() => {
@@ -18,7 +20,7 @@ export default function CategorizeMonth() {
             { headers: { accessToken: sessionStorage.getItem('accessToken') } }
         ).then(async (response) => {
             if (response.data.error) {
-                //console.log(response.data.error)
+                toast.error(response.data.error)
 
             }
             else {
@@ -26,6 +28,9 @@ export default function CategorizeMonth() {
                 setMonthData(response.data)
             }
         })
+        .catch((error)=> {
+            toast.error("Error in inserting data", error)
+          })
     }, [])
     //console.log("MD=", monthData)
     const chartMonthlyData = [['Category', ...Object.keys(monthData)]];
@@ -57,7 +62,7 @@ export default function CategorizeMonth() {
 
         const chartMonthlyData = [['Category', ...Object.keys(monthData)]];
         //console.log("chartMonthlyData=", chartMonthlyData)
-        const value = allCategories.forEach(async category => {
+        allCategories.forEach(async category => {
             const row = [category];
 
 
@@ -93,10 +98,12 @@ export default function CategorizeMonth() {
 
 
         await setData(filteredData)
-
+       
+        
 
 
     }
+   
 
 
 
@@ -202,7 +209,7 @@ export default function CategorizeMonth() {
 
             <div>
 
-                {data.length <= 0 ? (
+                {data.length !== 0 ? (
                     <>
                         <Table striped bordered hover>
                             <thead>
@@ -237,6 +244,8 @@ export default function CategorizeMonth() {
                 )}
 
             </div>
+            <Toaster />
             </div>
+            
             )
 }

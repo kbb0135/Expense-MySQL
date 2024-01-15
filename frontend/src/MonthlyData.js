@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Chart from 'react-google-charts';
 import Table from 'react-bootstrap/Table'
 import './Expense.css'
-
+import toast, { Toaster } from 'react-hot-toast'
 export default function MonthlyData() {
   const [monthData, setMonthData] = useState([])
   const [category, setCategory] = useState("")
@@ -90,6 +90,21 @@ export default function MonthlyData() {
         setMonthData(response.data)
       }
     })
+    .catch((error) => {
+      if (error.response) {
+          toast.error(error.response.data.error)
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.error("Server responded with status code:", error.response.status);
+          console.error("Error data:", error.response.data.error);
+      } else if (error.request) {
+          // The request was made but no response was received
+          toast.error("No response received:", error.request);
+      } else {
+          // Something happened in setting up the request that triggered the error
+          console.error("Error:", error.message);
+      }
+  })
   }, [])
 
   //for bar 

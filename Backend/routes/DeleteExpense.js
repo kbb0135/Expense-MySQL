@@ -2,15 +2,16 @@ const express = require('express'); //initializing express
 //using excpress to map those routes
 const router = express.Router()
 const {AddExpense} = require("../models")
+const {validateToken} = require("../Middleware/Auth")
 
-router.post("/", async(req, res)=> {
+
+router.post("/",validateToken, async(req, res)=> {
     try {
         const deleteExpenseId = req.body;
         await AddExpense.destroy({where: {id :deleteExpenseId.id}});
     }
     catch(error) {
-        console.log("Error adding expense:", error);
-        res.status(500).json({ error: "Failed to add expense" });
+        res.status(500).json({ error: "Failed to delete expense" });
     }
     
 
